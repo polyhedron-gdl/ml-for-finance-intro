@@ -199,18 +199,30 @@ By the end of this lesson, students will:
 	Click the link below to play the video: \href{run:training-explication.mp4}{\textbf{Play Video}}
 \end{frame}
 %..................................................................
-\begin{frame}{Applications of Machine Learning}
+\begin{frame}{Defining Machine Learning}{Applications in Banking and Finance}
 	Machine Learning finds applications across diverse fields.
 	\begin{center}
-	\includegraphics[scale=0.35]{../05-pictures/lesson-1-1_pic_5.png}
+	\includegraphics[scale=0.3]{../05-pictures/lesson-1-1_pic_5.png}
 	\end{center}
 \end{frame}
 %__________________________________________________________________________
 %
-\subsection{Features and Labels}
+%\subsection{Features and Labels}
 %__________________________________________________________________________
 %
-\begin{frame}{Features and Labels}
+\begin{frame}{Common Concepts}{Defining Machine Learning}
+Before discussing the main types of ML models, we must introduce some fundamental concepts. These concepts are common across all machine learning applications.
+\vspace{1cm}
+% Fundamental Concepts Slide
+    \begin{itemize}
+        \item \textbf{Features}: The input variables used to make predictions.
+        \item \textbf{Labels}: The target outputs that the model aims to predict.
+        \item \textbf{Loss Function}: A metric that quantifies the error of the model’s predictions.
+        \item \textbf{Optimization}: The process of adjusting model parameters to minimize the loss function.
+    \end{itemize}
+\end{frame}
+%..................................................................
+\begin{frame}{Features and Labels}{Defining Machine Learning}
 	\begin{itemize}
 		\item The data for \textbf{ML Models} contains what are referred to as \textbf{features} and \textbf{labels};
 		\item \textit{Labels} are \ul{the values of the target that is to be predicted};
@@ -222,7 +234,7 @@ By the end of this lesson, students will:
 	
 \end{frame}
 %..................................................................
-\begin{frame}{Features and Labels}
+\begin{frame}{Features and Labels}{Defining Machine Learning}
 	\begin{itemize}
 		\item For example, when predicting the \textbf{price of a house}, the \textit{features} could be the \textit{square meters of living space}, \textit{the number of bedrooms}, \textit{the number of bathrooms}, \textit{the size of the garage} and so on. 
 		\item The \textit{label} would be \textit{the house price};  
@@ -233,10 +245,10 @@ By the end of this lesson, students will:
 \end{frame}
 %__________________________________________________________________________
 %
-\subsection{Cost Functions}
+%\subsection{Cost Functions}
 %__________________________________________________________________________
 %
-\begin{frame}{Cost Function}
+\begin{frame}{Cost Function}{Defining Machine Learning}
 \begin{itemize}
 \item In Machine Learning a \textbf{Cost Function} or loss function is used to represent \hly{\text{how far away a mathematical model is from the real data}};
 \item One adjust the mathematical model usually by varying parameters within the model so as to \ul{minimize the const function};
@@ -247,10 +259,10 @@ where the $\theta$s are the parameters that we want to find to give us the best 
 \end{itemize}
 \end{frame}
 %..................................................................
-\begin{frame}{Cost Function}
+\begin{frame}{Cost Function}{Defining Machine Learning}
 \begin{itemize}
 \item We want to measure how far away the data, the $y^{(n)}$s are from the function $h_\theta (x)$;
-\item A common way to do this is via the quadratic cost function
+\item For example in a linear regression problem, a common way to do this is via the quadratic cost function
 \begin{equation}\label{cost_function}
 		J(\mathbf{\theta}) =  \frac{1}{2N} \sum\limits_{n=1}^N \left[h_\theta \left( x^{(n)} \right) - y ^{(n)}\right]^2 
 \end{equation}
@@ -258,8 +270,53 @@ where the $\theta$s are the parameters that we want to find to give us the best 
 \item If we have a nice convex function then there is a numerical method that will converge to the solution, it is called \textbf{gradient descent}. 
 \end{itemize}
 \end{frame}
+%..................................................................
+\begin{frame}{Cost Function}{Defining Machine Learning}
+\begin{itemize}
+\item The quadratic cost function is probably one of the most used cost function for the regression problem;
+\item What if you have a classification problem?
+\item There are a lot of different possibilities. For example, for a simple binary classification problem we can use the logistic loss function
+\begin{equation}\label{logistic_loss_function}
+L(y, \hat{y}) = -[y\log{\hat{y}} + (1 - y)\log{(1 - \hat{y})}]
+\end{equation}
+\end{itemize}
+    \begin{itemize}
+        \item $y$ is the true label (0 or 1).
+        \item $\hat{y}$ is the predicted probability of class 1.
+        \item The function penalizes incorrect predictions more severely.
+    \end{itemize}
+
+\end{frame}
+%..................................................................
+\begin{frame}{Cost Function}{Defining Machine Learning}
+\begin{equation}\label{logistic_loss_function}
+L(y, \hat{y}) = -[y\log{\hat{y}} + (1 - y)\log{(1 - \hat{y})}]
+\end{equation}
+
+    \textbf{When \( y = 1 \)}:
+    \[ L(1, \hat{y}) = -\log{\hat{y}} \]
+    \begin{itemize}
+        \item If \( \hat{y} \) is close to 1, the loss is small.
+        \item If \( \hat{y} \) is close to 0, the loss is large.
+    \end{itemize}
+    \vspace{0.25cm}
+    \textbf{When \( y = 0 \)}:
+    \[ L(0, \hat{y}) = -\log{(1 - \hat{y})} \]
+    \begin{itemize}
+        \item If \( \hat{y} \) is close to 0, the loss is small.
+        \item If \( \hat{y} \) is close to 1, the loss is large.
+    \end{itemize}
+\end{frame}
 %...................................................................................................
-\begin{frame}{Gradient Descent}
+\begin{frame}{Optimization}{Defining Machine Learning}
+    \begin{itemize}
+        \item Optimization in machine learning refers to the process of adjusting a model’s parameters to minimize (or maximize) a given objective function. 
+        \item This function, often called the loss function, measures how well the model's predictions match the actual data. 
+        \item The goal is to find the best set of parameters that improve the model’s performance.
+    \end{itemize}
+\end{frame}
+%...................................................................................................
+\begin{frame}{Optimization}{Defining Machine Learning}
    \begin{itemize}
       \item   				  						  
 		Gradient Descent is a very generic optimization algorithm capable of finding optimal solutions to a wide range of problems. 
@@ -269,7 +326,7 @@ where the $\theta$s are the parameters that we want to find to give us the best 
    \end{itemize}
 \end{frame}
 %...................................................................................................
-\begin{frame}{Gradient Descent}
+\begin{frame}{Optimization}{Defining Machine Learning}
 An important parameter in Gradient Descent is the size of the steps, determined by
 the learning rate hyperparameter. 
    \begin{center}
@@ -277,21 +334,21 @@ the learning rate hyperparameter.
    \end{center}
 \end{frame}
 %...................................................................................................
-\begin{frame}{Gradient Descent}
+\begin{frame}{Optimization}{Defining Machine Learning}
 If the learning rate is too small, then the algorithm
 will have to go through many iterations to converge, which will take a long time...   \begin{center}
    \includegraphics[scale=.6]{../05-pictures/lesson-1-1_pic_9.png} 	
    \end{center}
 \end{frame}
 %...................................................................................................
-\begin{frame}{Gradient Descent}
+\begin{frame}{Optimization}{Defining Machine Learning}
 ... on the other hand, if the learning rate is too high, you might jump across the valley. This might make the algorithm diverge failing to find a good solution. 
    \begin{center}
    \includegraphics[scale=.6]{../05-pictures/lesson-1-1_pic_10.png} 	
    \end{center}
 \end{frame}
 %...................................................................................................
-\begin{frame}{Gradient Descent}
+\begin{frame}{Optimization}{Defining Machine Learning}
 Having defined an appropriate learning rate, the scheme works as follow
 \begin{itemize}
 \item Start with an initial guess for each parameter $\theta_k$;
@@ -307,16 +364,6 @@ where $\beta$ is our learning rate;
 In the above description of gradient descent we have used all of the data points simultaneously. This is called \textbf{batch gradient descent}
 \end{tcolorbox}
 \end{frame}
-%...................................................................................................
-\begin{frame}{Gradient Descent}
-\begin{itemize}
-\item Rather then use all of the data in the parameter updating we can use a technique called \textbf{stochastic gradient descent};
-\item This technique is the same as the batch gradient descent except that you only update using \textbf{one} of the data points each time and this data point is chosen \textbf{randomly};
-\item Especially in high-dimensional optimization problems this reduces the computational burden, achieving faster iterations in trade for a lower convergence rate;
-\item When the learning rates decrease with an appropriate rate, and subject to relatively mild assumptions, stochastic gradient descent converges almost surely to a global minimum when the objective function is convex or pseudoconvex, and otherwise converges almost surely to a local minimum;
-\end{itemize}
-\end{frame}
-
 %===================================================================================================
 \section{The Machine Learning Process
 \\ \scalebox{0.8}{General Workflow of a ML Application}}
