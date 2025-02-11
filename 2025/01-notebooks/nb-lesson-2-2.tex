@@ -1,0 +1,3567 @@
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+\documentclass{article}
+
+
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{nb-lesson-2-2}
+    
+    
+    
+    
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Run in Google Colab
+
+    \section{Data Preprocessing}\label{data-preprocessing}
+
+    \subsection{Definitions}\label{definitions}
+
+Raw data rarely comes in the form and shape that is necessary for the
+optimal performance of a learning algorithm. On the other hand, the
+success of a machine learning algorithm highly depends on the quality of
+the data fed into the model. Real-world data is often dirty containing
+outliers, missing values, wrong data types, irrelevant features, or
+non-standardized data. The presence of any of these will prevent the
+machine learning model to properly learn. For this reason, transforming
+raw data into a useful format is an essential stage in the machine
+learning process. Therefore, it is absolutely critical to ensure that we
+examine and preprocess a dataset before we feed it to a learning
+algorithm. In this section, we will discuss the essential data
+preprocessing techniques that will help us to build good machine
+learning models.
+
+The topics that we will cover in this lesson are as follows:
+
+\begin{itemize}
+\tightlist
+\item
+  Removing and imputing missing values from the dataset
+\item
+  Getting categorical data into shape for machine learning algorithms
+\item
+  Selecting relevant features for the model construction
+\item
+  Feature Normalization
+\end{itemize}
+
+    \subsection{Philosophy of Use of
+Scikit-Learn}\label{philosophy-of-use-of-scikit-learn}
+
+Scikit-learn is one of the most widely used Python libraries for machine
+learning. Its design philosophy is centered on \textbf{simplicity,
+modularity, and consistency}, making it accessible to both beginners and
+advanced users.
+
+The \textbf{core principles} that guide the usage of scikit-learn are:
+1. \textbf{Unified API}: Every model (regression, classification,
+clustering, dimensionality reduction, etc.) follows the same pattern. 2.
+\textbf{Minimal Configuration}: Most models work well with default
+parameters and can be fine-tuned later. 3. \textbf{Consistency}: Whether
+you are dealing with a linear regression, decision tree, or neural
+network, the interaction with models remains the same. 4.
+\textbf{Pipeline-Oriented}: Scikit-learn encourages a step-by-step
+workflow involving data preprocessing, model training, and prediction.
+
+\subsubsection{\texorpdfstring{The Core Methods: \texttt{fit()},
+\texttt{transform()},
+\texttt{predict()}}{The Core Methods: fit(), transform(), predict()}}\label{the-core-methods-fit-transform-predict}
+
+Scikit-learn is built around a \textbf{three-step workflow}:
+\textbf{fitting}, \textbf{transforming}, and \textbf{predicting}. Almost
+every estimator (a model or transformer) in scikit-learn follows these
+methods.
+
+\textbf{1. \texttt{fit()} -- Learning from Data}
+
+\begin{itemize}
+\tightlist
+\item
+  This method is used to \textbf{train} a model or a transformer on the
+  given dataset.
+\item
+  It extracts relevant patterns, parameters, or statistics from the
+  data.
+\item
+  Used in \textbf{both preprocessing transformers (e.g., scalers, PCA)}
+  and \textbf{models (e.g., linear regression, decision trees)}.
+\end{itemize}
+
+\textbf{Usage:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model.fit(X\_train, y\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+or, for transformers:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{scaler.fit(X\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Example: Linear Regression}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ sklearn.linear\_model }\ImportTok{import}\NormalTok{ LinearRegression}
+
+\NormalTok{X\_train }\OperatorTok{=}\NormalTok{ [[}\DecValTok{1}\NormalTok{], [}\DecValTok{2}\NormalTok{], [}\DecValTok{3}\NormalTok{], [}\DecValTok{4}\NormalTok{]]}
+\NormalTok{y\_train }\OperatorTok{=}\NormalTok{ [}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{]}
+
+\NormalTok{model }\OperatorTok{=}\NormalTok{ LinearRegression()}
+\NormalTok{model.fit(X\_train, y\_train)  }\CommentTok{\# Learns the relationship (y = 2x)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Example: Standard Scaler}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The scaler methods in scikit{-}learn are preprocessing techniques used to normalize or }
+\CommentTok{\# standardize numerical data before feeding it into a machine learning model.}
+
+\ImportTok{from}\NormalTok{ sklearn.preprocessing }\ImportTok{import}\NormalTok{ StandardScaler}
+
+\NormalTok{X\_train }\OperatorTok{=}\NormalTok{ [[}\DecValTok{10}\NormalTok{], [}\DecValTok{20}\NormalTok{], [}\DecValTok{30}\NormalTok{], [}\DecValTok{40}\NormalTok{]]}
+
+\NormalTok{scaler }\OperatorTok{=}\NormalTok{ StandardScaler()}
+\NormalTok{scaler.fit(X\_train)  }\CommentTok{\# Computes mean and standard deviation}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{2. \texttt{transform()} -- Applying a Transformation}
+
+\begin{itemize}
+\tightlist
+\item
+  Used \textbf{only by transformers} (not predictive models).
+\item
+  It applies a learned transformation to new data.
+\item
+  Example use cases:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Feature scaling (e.g., StandardScaler, MinMaxScaler)}
+  \item
+    \textbf{Dimensionality reduction (e.g., PCA)}
+  \item
+    \textbf{Encoding categorical variables (e.g., OneHotEncoder)}
+  \end{itemize}
+\end{itemize}
+
+\textbf{Usage:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X\_transformed }\OperatorTok{=}\NormalTok{ transformer.transform(X\_new)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Example: Standard Scaler}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X\_test }\OperatorTok{=}\NormalTok{ [[}\DecValTok{25}\NormalTok{], [}\DecValTok{35}\NormalTok{]]}
+
+\NormalTok{X\_scaled }\OperatorTok{=}\NormalTok{ scaler.transform(X\_test)  }\CommentTok{\# Applies scaling learned from fit()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{quote}
+\textbf{Important:} \texttt{fit\_transform(X)} is a shortcut for
+\texttt{fit(X)} followed by \texttt{transform(X)}.
+\end{quote}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X\_scaled }\OperatorTok{=}\NormalTok{ scaler.fit\_transform(X\_train)  }\CommentTok{\# Often used in pipelines}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{3. \texttt{predict()} -- Making Predictions}
+
+\begin{itemize}
+\tightlist
+\item
+  Used \textbf{only by predictive models} (not transformers).
+\item
+  Takes new input data (\texttt{X\_test}) and outputs predictions
+  (\texttt{y\_pred}).
+\item
+  Works with both \textbf{classification (e.g., DecisionTreeClassifier,
+  SVM)} and \textbf{regression (e.g., LinearRegression,
+  RandomForestRegressor)}.
+\end{itemize}
+
+\textbf{Usage:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y\_pred }\OperatorTok{=}\NormalTok{ model.predict(X\_test)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Example: Predicting with Linear Regression}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X\_test }\OperatorTok{=}\NormalTok{ [[}\DecValTok{5}\NormalTok{], [}\DecValTok{6}\NormalTok{]]}
+
+\NormalTok{y\_pred }\OperatorTok{=}\NormalTok{ model.predict(X\_test)  }\CommentTok{\# Output: [10, 12] (y = 2x)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{How These Methods Fit Together in a Typical
+Pipeline}\label{how-these-methods-fit-together-in-a-typical-pipeline}
+
+A typical \textbf{machine learning workflow} in scikit-learn follows
+these steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Preprocess the data} (fit and transform):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Handle missing values, scale features, encode categorical variables.
+  \item
+    Example: \texttt{StandardScaler().fit\_transform(X)}
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Train the model} (fit):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Example: \texttt{model.fit(X\_train,\ y\_train)}
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Make predictions} (predict):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Example: \texttt{y\_pred\ =\ model.predict(X\_test)}
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Example: Full Pipeline}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ sklearn.pipeline }\ImportTok{import}\NormalTok{ Pipeline}
+\ImportTok{from}\NormalTok{ sklearn.preprocessing }\ImportTok{import}\NormalTok{ StandardScaler}
+\ImportTok{from}\NormalTok{ sklearn.linear\_model }\ImportTok{import}\NormalTok{ LinearRegression}
+
+\CommentTok{\# Define pipeline: Scaling + Linear Regression}
+\NormalTok{pipeline }\OperatorTok{=}\NormalTok{ Pipeline([}
+\NormalTok{    (}\StringTok{\textquotesingle{}scaler\textquotesingle{}}\NormalTok{, StandardScaler()),  }\CommentTok{\# First, scale features}
+\NormalTok{    (}\StringTok{\textquotesingle{}regressor\textquotesingle{}}\NormalTok{, LinearRegression())  }\CommentTok{\# Then, fit regression model}
+\NormalTok{])}
+
+\CommentTok{\# Fit pipeline}
+\NormalTok{pipeline.fit(X\_train, y\_train)}
+
+\CommentTok{\# Predict}
+\NormalTok{y\_pred }\OperatorTok{=}\NormalTok{ pipeline.predict(X\_test)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Key Takeaways} - \texttt{fit()}: \textbf{Learns} from the data
+(used by both transformers and models). - \texttt{transform()}:
+\textbf{Applies} learned transformations (only for transformers). -
+\texttt{predict()}: \textbf{Generates predictions} from trained models
+(only for predictive models). - \textbf{Scikit-learn enforces a uniform
+API}, making it easy to switch between models. - \textbf{Pipelines}
+streamline the workflow by combining preprocessing and modeling in a
+single object.
+
+    \subsection{Data Cleaning}\label{data-cleaning}
+
+    \subsubsection{Dealing with missing
+data}\label{dealing-with-missing-data}
+
+The real-world data often has a lot of missing values. The cause of
+missing values can be data corruption or failure to record data. The
+handling of missing data is very important during the preprocessing of
+the dataset as many machine learning algorithms do not support missing
+values.
+
+Let's create a simple example data frame from a comma-separated values
+(CSV) file to get a better grasp of the problem:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         \PY{c+c1}{\PYZsh{}}
+         \PY{c+c1}{\PYZsh{} The StringIO module is an in\PYZhy{}memory file\PYZhy{}like object. This object can be used as input or output }
+         \PY{c+c1}{\PYZsh{} to the most function that would expect a standard file object. When the StringIO object is created }
+         \PY{c+c1}{\PYZsh{} it is initialized by passing a string to the constructor. If no string is passed the StringIO will }
+         \PY{c+c1}{\PYZsh{} start empty. In both cases, the initial cursor on the file starts at zero. NOTE: This module does }
+         \PY{c+c1}{\PYZsh{} not exist in the latest version of Python so to work with this module we have to import it from }
+         \PY{c+c1}{\PYZsh{} the io module.}
+         \PY{c+c1}{\PYZsh{}}
+         \PY{k+kn}{from} \PY{n+nn}{io} \PY{k+kn}{import} \PY{n}{StringIO}
+         
+         \PY{n}{csv\PYZus{}data} \PY{o}{=} \PYZbs{}
+         \PY{+w}{    }\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{    A,B,C,D}
+         \PY{l+s+sd}{    1.0,2.0,3.0,4.0}
+         \PY{l+s+sd}{    5.0,6.0,,8.0}
+         \PY{l+s+sd}{    10.0,11.0,12.0,}
+         \PY{l+s+sd}{    10.0,11.0,12.0,13.0}
+         \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{StringIO}\PY{p}{(}\PY{n}{csv\PYZus{}data}\PY{p}{)}\PY{p}{)}
+         \PY{n}{df}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:}        A     B     C     D
+         0    1.0   2.0   3.0   4.0
+         1    5.0   6.0   NaN   8.0
+         2   10.0  11.0  12.0   NaN
+         3   10.0  11.0  12.0  13.0
+\end{Verbatim}
+    \subsubsection{Delete Rows with Missing
+Values}\label{delete-rows-with-missing-values}
+
+One of the easiest ways to deal with missing data is simply to remove
+the corresponding features (columns) or training examples (rows) from
+the dataset entirely. Missing values can be handled by deleting the rows
+or columns having null values. If columns have more than half of the
+rows as null then the entire column can be dropped. The rows which are
+having one or more columns values as null can also be dropped.
+
+Remember that, in pandas, rows with missing values can easily be dropped
+via the \textbf{dropna} method:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{df1} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{df1}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:}        A     B     C     D
+         0    1.0   2.0   3.0   4.0
+         3   10.0  11.0  12.0  13.0
+\end{Verbatim}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{df2} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{df2}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:}        A     B
+         0    1.0   2.0
+         1    5.0   6.0
+         2   10.0  11.0
+         3   10.0  11.0
+\end{Verbatim}
+    Although the removal of missing data seems to be a convenient approach,
+it also comes with certain disadvantages; for example, we may end up
+removing too many samples, which will make a reliable analysis
+impossible. Or, if we remove too many feature columns, we will run the
+risk of losing valuable information that our classifier needs to
+discriminate between classes. In the next section, we will look at one
+of the most commonly used alternatives for dealing with missing values:
+interpolation techniques.
+
+    \textbf{Pros}: - A model trained with the removal of all missing values
+creates a robust model.
+
+\textbf{Cons}: - Loss of a lot of information. - Works poorly if the
+percentage of missing values is excessive in comparison to the complete
+dataset.
+
+    \subsubsection{Imputing missing values}\label{imputing-missing-values}
+
+One of the most common interpolation techniques is called
+\textbf{imputation}, where we simply replace the missing value with the
+mean value of the entire feature column.
+
+    \begin{quote}
+\textbf{scikit-learn - SimpleImputer}
+
+A convenient way to achieve this is by using the \textbf{SimpleImputer}
+class from scikit-learn. Scikit-learn, infact, has built-in methods to
+perform these preprocessing steps. For example, the
+\texttt{SimpleImputer()} fills in missing values using a method of your
+choice (see the code \textgreater below). The Scikit-learn documentation
+lists the full options for data preprocessing
+\href{https://scikit-learn.org/stable/modules/preprocessing.html}{here}.
+\end{quote}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{impute} \PY{k+kn}{import} \PY{n}{SimpleImputer}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{c+c1}{\PYZsh{}}
+         \PY{c+c1}{\PYZsh{} define the imputing method}
+         \PY{c+c1}{\PYZsh{}}
+         \PY{n}{imr} \PY{o}{=} \PY{n}{SimpleImputer}\PY{p}{(}\PY{n}{missing\PYZus{}values}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,} \PY{n}{strategy}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{imr} \PY{o}{=} \PY{n}{imr}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+         \PY{n}{imputed\PYZus{}data} \PY{o}{=} \PY{n}{imr}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+         
+         \PY{n}{imputed\PYZus{}data}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} array([[ 1.        ,  2.        ,  3.        ,  4.        ],
+                [ 5.        ,  6.        ,  9.        ,  8.        ],
+                [10.        , 11.        , 12.        ,  8.33333333],
+                [10.        , 11.        , 12.        , 13.        ]])
+\end{Verbatim}
+    Alternatively, an even more convenient way to impute missing values is
+by using pandas' \textbf{fillna} method and providing an imputation
+method as an argument. For example, using pandas, we could achieve the
+same mean imputation directly in the DataFrame object via the following
+command:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{df}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}29}]:}       A     B     C     D     E     F     G
+         0   1.0   2.0   3.0   4.0   5.0   6.0   7.0
+         1   5.0   2.0   7.0   8.0   5.0   6.0  11.0
+         2   9.0   6.0  11.0  12.0   9.0  10.0  15.0
+         3  13.0   6.0  15.0  16.0   9.0  10.0  19.0
+         4  17.0  10.0  19.0  20.0  13.0  14.0  23.0
+         5  21.0  10.0  23.0  24.0  13.0  14.0  27.0
+         6  25.0  14.0  27.0  28.0  17.0  18.0  31.0
+         7  29.0  14.0  31.0  32.0  17.0  18.0  35.0
+         8  33.0  18.0  35.0  36.0  21.0  22.0  39.0
+         9  37.0  18.0  39.0  40.0  21.0  22.0  43.0
+\end{Verbatim}
+    \textbf{Pros}: - Prevent data loss which results in deletion of rows or
+columns - Works well with a small dataset and is easy to implement.
+
+\textbf{Cons}: - Works only with numerical continuous variables. - Can
+cause data leakage - Do not factor the covariance between features.
+
+    \subsubsection{Identify and Delete Zero-Variance
+Predictors}\label{identify-and-delete-zero-variance-predictors}
+
+Zero-variance predictors refer to input features that contain a single
+value across the entire spectrum of observations. Accordingly, they do
+not add any value to the prediction algorithm since the target variable
+is not affected by the input value, making them redundant. Some ML
+algorithms might also run into unexpected errors or output wrong
+results. Pandas provides a function to count and list the number of
+unique values in each column of a Pandas dataframe:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{csv\PYZus{}data} \PY{o}{=} \PYZbs{}
+         \PY{n}{data\PYZus{}string} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}\PYZsq{}\PYZsq{}}\PY{l+s+s1}{A,B,C,D,E,F,G,H}
+         \PY{l+s+s1}{1.0,2.0,3.0,4.0,5.0,6.0,7.0,42.0}
+         \PY{l+s+s1}{5.0,2.0,7.0,8.0,5.0,6.0,11.0,42.0}
+         \PY{l+s+s1}{9.0,6.0,11.0,12.0,9.0,10.0,15.0,42.0}
+         \PY{l+s+s1}{13.0,6.0,15.0,16.0,9.0,10.0,19.0,42.0}
+         \PY{l+s+s1}{17.0,10.0,19.0,20.0,13.0,14.0,23.0,42.0}
+         \PY{l+s+s1}{21.0,10.0,23.0,24.0,13.0,14.0,27.0,42.0}
+         \PY{l+s+s1}{25.0,14.0,27.0,28.0,17.0,18.0,31.0,42.0}
+         \PY{l+s+s1}{29.0,14.0,31.0,32.0,17.0,18.0,35.0,42.0}
+         \PY{l+s+s1}{33.0,18.0,35.0,36.0,21.0,22.0,39.0,42.0}
+         \PY{l+s+s1}{37.0,18.0,39.0,40.0,21.0,22.0,43.0,42.0}\PY{l+s+s1}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         
+         \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{StringIO}\PY{p}{(}\PY{n}{csv\PYZus{}data}\PY{p}{)}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Get number of rows and columns}
+         \PY{n}{num\PYZus{}rows}\PY{p}{,} \PY{n}{num\PYZus{}columns} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{shape}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{num\PYZus{}rows}\PY{p}{,} \PY{n}{num\PYZus{}columns}\PY{p}{)}
+         \PY{n}{df}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+10 8
+
+    \end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:}       A     B     C     D     E     F     G     H
+         0   1.0   2.0   3.0   4.0   5.0   6.0   7.0  42.0
+         1   5.0   2.0   7.0   8.0   5.0   6.0  11.0  42.0
+         2   9.0   6.0  11.0  12.0   9.0  10.0  15.0  42.0
+         3  13.0   6.0  15.0  16.0   9.0  10.0  19.0  42.0
+         4  17.0  10.0  19.0  20.0  13.0  14.0  23.0  42.0
+         5  21.0  10.0  23.0  24.0  13.0  14.0  27.0  42.0
+         6  25.0  14.0  27.0  28.0  17.0  18.0  31.0  42.0
+         7  29.0  14.0  31.0  32.0  17.0  18.0  35.0  42.0
+         8  33.0  18.0  35.0  36.0  21.0  22.0  39.0  42.0
+         9  37.0  18.0  39.0  40.0  21.0  22.0  43.0  42.0
+\end{Verbatim}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{df}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}31}]:} A    10
+         B     5
+         C    10
+         D    10
+         E     5
+         F     5
+         G    10
+         H     1
+         dtype: int64
+\end{Verbatim}
+    The code below will drop all columns that have a single value and update
+the df dataframe.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{df2} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{[}\PY{n}{df}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{inplace} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{df2}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+      A     B     C     D     E     F     G
+0   1.0   2.0   3.0   4.0   5.0   6.0   7.0
+1   5.0   2.0   7.0   8.0   5.0   6.0  11.0
+2   9.0   6.0  11.0  12.0   9.0  10.0  15.0
+3  13.0   6.0  15.0  16.0   9.0  10.0  19.0
+4  17.0  10.0  19.0  20.0  13.0  14.0  23.0
+5  21.0  10.0  23.0  24.0  13.0  14.0  27.0
+6  25.0  14.0  27.0  28.0  17.0  18.0  31.0
+7  29.0  14.0  31.0  32.0  17.0  18.0  35.0
+8  33.0  18.0  35.0  36.0  21.0  22.0  39.0
+9  37.0  18.0  39.0  40.0  21.0  22.0  43.0
+      A     B     C     D     E     F     G     H
+0   1.0   2.0   3.0   4.0   5.0   6.0   7.0  42.0
+1   5.0   2.0   7.0   8.0   5.0   6.0  11.0  42.0
+2   9.0   6.0  11.0  12.0   9.0  10.0  15.0  42.0
+3  13.0   6.0  15.0  16.0   9.0  10.0  19.0  42.0
+4  17.0  10.0  19.0  20.0  13.0  14.0  23.0  42.0
+5  21.0  10.0  23.0  24.0  13.0  14.0  27.0  42.0
+6  25.0  14.0  27.0  28.0  17.0  18.0  31.0  42.0
+7  29.0  14.0  31.0  32.0  17.0  18.0  35.0  42.0
+8  33.0  18.0  35.0  36.0  21.0  22.0  39.0  42.0
+9  37.0  18.0  39.0  40.0  21.0  22.0  43.0  42.0
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{[}\PY{n}{df}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{df}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:}       A     B     C     D     E     F     G
+         0   1.0   2.0   3.0   4.0   5.0   6.0   7.0
+         1   5.0   2.0   7.0   8.0   5.0   6.0  11.0
+         2   9.0   6.0  11.0  12.0   9.0  10.0  15.0
+         3  13.0   6.0  15.0  16.0   9.0  10.0  19.0
+         4  17.0  10.0  19.0  20.0  13.0  14.0  23.0
+         5  21.0  10.0  23.0  24.0  13.0  14.0  27.0
+         6  25.0  14.0  27.0  28.0  17.0  18.0  31.0
+         7  29.0  14.0  31.0  32.0  17.0  18.0  35.0
+         8  33.0  18.0  35.0  36.0  21.0  22.0  39.0
+         9  37.0  18.0  39.0  40.0  21.0  22.0  43.0
+\end{Verbatim}
+    \begin{quote}
+\textbf{pandas remind}: Here's a concise reminder of the key
+\textbf{pandas} syntax properties used in the given instruction:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{\texttt{df.nunique()}}\strut \\
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Returns the number of unique values for each column in the DataFrame.
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{\texttt{df.columns{[}...{]}}}\strut \\
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Retrieves the column labels of the DataFrame.
+\item
+  \texttt{df.columns{[}df.nunique()\ ==\ 1{]}} selects columns where all
+  values are the same (i.e., with only one unique value).
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{\texttt{df.drop(columns=...)}}\strut \\
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Drops the specified columns from the DataFrame.
+\item
+  \texttt{inplace=False} ensures that the original DataFrame remains
+  unchanged, returning a new modified DataFrame (\texttt{df2} in this
+  \textgreater case).
+\end{itemize}
+\end{quote}
+
+    \subsection{Categorical Data}\label{categorical-data}
+
+    Categorical data is a form of data that takes on values within a finite
+set of discrete classes. It is difficult to count or measure categorical
+data using numbers and therefore they are divided into categories:
+\textbf{ordinal} and \textbf{nominal} features.
+
+\textbf{Ordinal} features can be understood as categorical values that
+\emph{can be sorted or ordered}. For example, t-shirt size would be an
+ordinal feature, because we can define an order: XL \textgreater{} L
+\textgreater{} M.
+
+In contrast, \textbf{nominal} features don't imply any order and, to
+continue with the previous example, we could think of t-shirt color as a
+nominal feature since it typically doesn't make sense to say that, for
+example, red is larger than blue.
+
+    \subsubsection{Encoding}\label{encoding}
+
+    Before we explore different techniques for handling such categorical
+data, let's create a new DataFrame to illustrate the problem:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{c+c1}{\PYZsh{} Define possible S\PYZam{}P ratings}
+         \PY{n}{ratings} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AAA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BBB}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BB}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CCC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+         
+         \PY{n}{num\PYZus{}samples} \PY{o}{=} \PY{l+m+mi}{10}
+         
+         \PY{c+c1}{\PYZsh{} Generate an updated synthetic dataset}
+         \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{ratings}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{p}{)}\PY{p}{,}                 \PY{c+c1}{\PYZsh{} Random S\PYZam{}P rating assignment}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{20000}\PY{p}{,} \PY{l+m+mi}{200000}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{p}{)}\PY{p}{,}          \PY{c+c1}{\PYZsh{} Income in dollars}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{18}\PY{p}{,} \PY{l+m+mi}{75}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{p}{)}\PY{p}{,}                    \PY{c+c1}{\PYZsh{} Age of the individual}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{employment\PYZus{}status}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unemployed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Self\PYZhy{}Employed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{p}{)}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}amount}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{5000}\PY{p}{,} \PY{l+m+mi}{500000}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{p}{)}\PY{p}{,}      \PY{c+c1}{\PYZsh{} Loan amount in dollars}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Yes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{p}{,} \PY{n}{p}\PY{o}{=}\PY{p}{[}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.8}\PY{p}{]}\PY{p}{)}  \PY{c+c1}{\PYZsh{} 20\PYZpc{} default history}
+         \PY{p}{\PYZcb{}}\PY{p}{)}
+         
+         \PY{n}{df}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}53}]:}   rating  income  age employment\_status  loan\_amount default\_history
+         0    AAA   41922   49          Employed       179441             Yes
+         1    CCC  120260   61          Employed        56907             Yes
+         2      A  125535   27        Unemployed       161385             Yes
+         3      D   82743   24          Employed       320422              No
+         4    AAA   90074   58        Unemployed       449747              No
+         5      B  126547   39          Employed       290341              No
+         6    CCC   58674   60     Self-Employed       210891              No
+         7    BBB  178618   47          Employed       125324              No
+         8    BBB   83793   25          Employed       200304             Yes
+         9     CC   29897   54          Employed       299131              No
+\end{Verbatim}
+    \begin{quote}
+\textbf{REMIND - FEATURES AND LABELS} *\textbf{ Remember that in machine
+learning, you have }features\textbf{ and }labels\textbf{. \emph{The
+features are the \textbf{descriptive} attributes}, and \emph{the label
+is what you're attempting to predict or forecast}. In this simple
+example, }rating\textbf{, }income\textbf{, }age\textbf{,
+}employment\_status\textbf{ and }loan\_amount\textbf{ are
+}features\textbf{ while }default\_history\textbf{ is the field that
+contains the }label** of the corresponding record.
+\end{quote}
+
+    To make sure that the learning algorithm interprets the ordinal features
+correctly, we need to convert the categorical string values into
+integers.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{LabelEncoder}
+         
+         \PY{n}{le} \PY{o}{=} \PY{n}{LabelEncoder}\PY{p}{(}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating\PYZus{}encoded}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{le}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+         \PY{n}{df}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}54}]:}   rating  income  age employment\_status  loan\_amount default\_history  \textbackslash{}
+         0    AAA   41922   49          Employed       179441             Yes   
+         1    CCC  120260   61          Employed        56907             Yes   
+         2      A  125535   27        Unemployed       161385             Yes   
+         3      D   82743   24          Employed       320422              No   
+         4    AAA   90074   58        Unemployed       449747              No   
+         5      B  126547   39          Employed       290341              No   
+         6    CCC   58674   60     Self-Employed       210891              No   
+         7    BBB  178618   47          Employed       125324              No   
+         8    BBB   83793   25          Employed       200304             Yes   
+         9     CC   29897   54          Employed       299131              No   
+         
+            rating\_encoded  
+         0               1  
+         1               5  
+         2               0  
+         3               6  
+         4               1  
+         5               2  
+         6               5  
+         7               3  
+         8               3  
+         9               4  
+\end{Verbatim}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{n}{rating\PYZus{}map} \PY{o}{=} \PY{p}{\PYZob{}}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AAA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BBB}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BB}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{4}\PY{p}{,} 
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CCC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{6}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{7}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{8}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{9}
+         \PY{p}{\PYZcb{}}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating\PYZus{}numeric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{rating\PYZus{}map}\PY{p}{)}
+         \PY{n}{df}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}55}]:}   rating  income  age employment\_status  loan\_amount default\_history  \textbackslash{}
+         0    AAA   41922   49          Employed       179441             Yes   
+         1    CCC  120260   61          Employed        56907             Yes   
+         2      A  125535   27        Unemployed       161385             Yes   
+         3      D   82743   24          Employed       320422              No   
+         4    AAA   90074   58        Unemployed       449747              No   
+         5      B  126547   39          Employed       290341              No   
+         6    CCC   58674   60     Self-Employed       210891              No   
+         7    BBB  178618   47          Employed       125324              No   
+         8    BBB   83793   25          Employed       200304             Yes   
+         9     CC   29897   54          Employed       299131              No   
+         
+            rating\_encoded  rating\_numeric  
+         0               1               0  
+         1               5               6  
+         2               0               2  
+         3               6               9  
+         4               1               0  
+         5               2               5  
+         6               5               6  
+         7               3               3  
+         8               3               3  
+         9               4               7  
+\end{Verbatim}
+    \begin{quote}
+\textbf{Preprocessing : sklearn.preprocessing}
+
+Among some commonly used preprocessing tasks come
+\texttt{OneHotEncoder}, \texttt{StandardScaler}, \texttt{MinMaxScaler},
+etc. These are respectively for encoding of the categorical features
+into a one-hot numeric array, standardization of the features and
+scaling each feature to a given range. Many other preprocessing methods
+are built-in this module. We can import this module as follows:
+\end{quote}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{df2} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating\PYZus{}encoded}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{df2}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating\PYZus{}numeric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         
+         \PY{n}{cols} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{n}{col} \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{df2}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{n}{col} \PY{o}{!=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+         \PY{n}{df2} \PY{o}{=} \PY{n}{df2}\PY{p}{[}\PY{n}{cols}\PY{p}{]}
+         \PY{n}{df2}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}59}]:}    rating  income  age employment\_status  loan\_amount default\_history
+         0       0   41922   49          Employed       179441             Yes
+         1       6  120260   61          Employed        56907             Yes
+         2       2  125535   27        Unemployed       161385             Yes
+         3       9   82743   24          Employed       320422              No
+         4       0   90074   58        Unemployed       449747              No
+         5       5  126547   39          Employed       290341              No
+         6       6   58674   60     Self-Employed       210891              No
+         7       3  178618   47          Employed       125324              No
+         8       3   83793   25          Employed       200304             Yes
+         9       7   29897   54          Employed       299131              No
+\end{Verbatim}
+    \subsubsection{Encoding Class Labels}\label{encoding-class-labels}
+
+    Many machine learning libraries require that class labels are encoded as
+integer values. Although most estimators for classification in
+scikit-learn convert class labels to integers internally, it is
+considered good practice to provide class labels as integer arrays to
+avoid technical glitches. To encode the class labels, we can use an
+approach similar to the mapping of ordinal features discussed
+previously. We need to remember that class labels are not ordinal, and
+it doesn't matter which integer number we assign to a particular string
+label. Thus, we can simply enumerate the class labels, starting at 0:
+
+    \begin{quote}
+\textbf{REMIND - enumerate() method in Python} ***
+
+\texttt{Enumerate()} method adds a counter to an iterable and returns it
+in a form of enumerating object. This enumerated object can then be used
+directly for loops or converted into a list of tuples using the
+\texttt{list()} method.
+\end{quote}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}65}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         
+         
+         \PY{n}{class\PYZus{}mapping} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{label}\PY{p}{:} \PY{n}{idx} \PY{k}{for} \PY{n}{idx}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default\PYZus{}history}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{\PYZcb{}}
+         \PY{n}{class\PYZus{}mapping}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}65}]:} \{'No': 0, 'Yes': 1\}
+\end{Verbatim}
+    Next, we can use the mapping dictionary to transform the class labels
+into integers:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}66}]:} \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default\PYZus{}history}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default\PYZus{}history}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{class\PYZus{}mapping}\PY{p}{)}
+         \PY{n}{df2}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}66}]:}    rating  income  age employment\_status  loan\_amount  default\_history
+         0       0   41922   49          Employed       179441                1
+         1       6  120260   61          Employed        56907                1
+         2       2  125535   27        Unemployed       161385                1
+         3       9   82743   24          Employed       320422                0
+         4       0   90074   58        Unemployed       449747                0
+         5       5  126547   39          Employed       290341                0
+         6       6   58674   60     Self-Employed       210891                0
+         7       3  178618   47          Employed       125324                0
+         8       3   83793   25          Employed       200304                1
+         9       7   29897   54          Employed       299131                0
+\end{Verbatim}
+    We can reverse the key-value pairs in the mapping dictionary as follows
+to map the converted class labels back to the original string
+representation:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}67}]:} \PY{n}{inv\PYZus{}class\PYZus{}mapping} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{v}\PY{p}{:} \PY{n}{k} \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{n}{v} \PY{o+ow}{in} \PY{n}{class\PYZus{}mapping}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}
+         \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default\PYZus{}history}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default\PYZus{}history}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{inv\PYZus{}class\PYZus{}mapping}\PY{p}{)}
+         \PY{n}{df2}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}67}]:}    rating  income  age employment\_status  loan\_amount default\_history
+         0       0   41922   49          Employed       179441             Yes
+         1       6  120260   61          Employed        56907             Yes
+         2       2  125535   27        Unemployed       161385             Yes
+         3       9   82743   24          Employed       320422              No
+         4       0   90074   58        Unemployed       449747              No
+         5       5  126547   39          Employed       290341              No
+         6       6   58674   60     Self-Employed       210891              No
+         7       3  178618   47          Employed       125324              No
+         8       3   83793   25          Employed       200304             Yes
+         9       7   29897   54          Employed       299131              No
+\end{Verbatim}
+    Alternatively, there is a convenient LabelEncoder class directly
+implemented in scikit-learn to achieve this:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}68}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{LabelEncoder}
+         
+         \PY{n}{class\PYZus{}le} \PY{o}{=} \PY{n}{LabelEncoder}\PY{p}{(}\PY{p}{)}
+         \PY{n}{y} \PY{o}{=} \PY{n}{class\PYZus{}le}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default\PYZus{}history}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+         \PY{n}{y}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}68}]:} array([1, 1, 1, 0, 0, 0, 0, 0, 1, 0])
+\end{Verbatim}
+    \subsubsection{One-hot Encoding}\label{one-hot-encoding}
+
+    When there is no a natural order we have to resort to a different
+approach that is to use the technique called \textbf{one-hot encoding}.
+The idea behind this approach is to create a new dummy feature for each
+unique value in the nominal feature column. Here, we would convert the
+\texttt{employment\_status} feature into three new features:
+\emph{employed}, \emph{self\_employed}, and \emph{unemployed}. Binary
+values can then be used to indicate the particular employment status of
+an example; for example, an employed customer can be encoded as
+\emph{employed=1, self\_employed=0, unemployed=0}. To perform this
+transformation, we can use the \texttt{OneHotEncoder} that is
+implemented in \texttt{scikit-learn}'s preprocessing module:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}69}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{OneHotEncoder}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{df2}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{employment\PYZus{}status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{values}
+         \PY{n}{color\PYZus{}ohe} \PY{o}{=} \PY{n}{OneHotEncoder}\PY{p}{(}\PY{p}{)}
+         \PY{n}{color\PYZus{}ohe}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}69}]:} array([[1., 0., 0.],
+                [1., 0., 0.],
+                [0., 0., 1.],
+                [1., 0., 0.],
+                [0., 0., 1.],
+                [1., 0., 0.],
+                [0., 1., 0.],
+                [1., 0., 0.],
+                [1., 0., 0.],
+                [1., 0., 0.]])
+\end{Verbatim}
+    Another way to create those dummy features via one-hot encoding is to
+use the get\_dummies method implemented in pandas. Applied to a
+DataFrame, the get\_dummies method will only convert string columns and
+leave all other columns unchanged:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}70}]:} \PY{n}{pd}\PY{o}{.}\PY{n}{get\PYZus{}dummies}\PY{p}{(}\PY{n}{df2}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{employment\PYZus{}status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}70}]:}    employment\_status\_Employed  employment\_status\_Self-Employed  \textbackslash{}
+         0                        True                            False   
+         1                        True                            False   
+         2                       False                            False   
+         3                        True                            False   
+         4                       False                            False   
+         5                        True                            False   
+         6                       False                             True   
+         7                        True                            False   
+         8                        True                            False   
+         9                        True                            False   
+         
+            employment\_status\_Unemployed  
+         0                         False  
+         1                         False  
+         2                          True  
+         3                         False  
+         4                          True  
+         5                         False  
+         6                         False  
+         7                         False  
+         8                         False  
+         9                         False  
+\end{Verbatim}
+    \subsection{Exercises}\label{exercises}
+
+    \subsubsection{Chocolate Bar Ratings}\label{chocolate-bar-ratings}
+
+\textbf{Context}
+
+Chocolate is one of the most popular candies in the world. Each year,
+residents of the United States collectively eat more than 2.8 billions
+pounds. However, not all chocolate bars are created equal! This dataset
+contains expert ratings of over 1,700 individual chocolate bars, along
+with information on their regional origin, percentage of cocoa, the
+variety of chocolate bean used and where the beans were grown.
+
+\textbf{Flavors of Cacao Rating System}:
+
+5= Elite (Transcending beyond the ordinary limits) 4= Premium (Superior
+flavor development, character and style) 3= Satisfactory(3.0) to
+praiseworthy(3.75) (well made with special qualities) 2= Disappointing
+(Passable but contains at least one significant flaw) 1= Unpleasant
+(mostly unpalatable)
+
+\textbf{Link}
+
+https://www.kaggle.com/rtatman/chocolate-bar-ratings
+
+    \textbf{Problem:}
+
+Download the \texttt{csv} file from the kaggle web page above and
+perform a simple visualization
+
+\textbf{Answer:}
+
+    First of all you need to import pandas library, then define a variable
+path (the folder in which you saved the csv file) and finally load the
+file using the method read\_csv of pandas. Use the method head() to have
+a look to the first lines:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ pandas }\ImportTok{as}\NormalTok{ pd}
+    
+\NormalTok{path }\OperatorTok{=} \StringTok{\textquotesingle{}./data\textquotesingle{}}
+\NormalTok{df }\OperatorTok{=}\NormalTok{ pd.read\_csv(path }\OperatorTok{+} \StringTok{"/flavors\_of\_cacao.csv"}\NormalTok{)}
+\NormalTok{df.head()}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{c+c1}{\PYZsh{} put here your code}
+\end{Verbatim}
+
+    \textbf{Problem:}
+
+Change columns names into:
+
+\begin{itemize}
+\tightlist
+\item
+  ``Company''
+\item
+  ``Spec\_Bean\_Origin\_or\_Bar\_Name''
+\item
+  ``Review\_Date''
+\item
+  ``Cocoa\_Percent''
+\item
+  ``Company\_Location''
+\item
+  ``Bean\_Type''``Broad\_Bean\_Origin''
+\end{itemize}
+
+\textbf{Answer:}
+
+    A possible solution is to use a dictionary. Please note that sometimes
+in pandas you can find strange characters, in particular the `\xa0'
+character that you have to remove as in this example. This seems to be a
+common problem in pandas dataframes, see for example this link
+https://stackoverflow.com/questions/55442727/remove-unicode-xa0-from-pandas-column
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OperatorTok{=}\NormalTok{ df.rename(columns}\OperatorTok{=}\NormalTok{\{}\StringTok{"Company}\CharTok{\textbackslash{}xa0\textbackslash{}n}\StringTok{(Maker{-}if known)"}\NormalTok{: }\StringTok{"Company"}\NormalTok{,}
+                        \StringTok{"Specific Bean Origin}\CharTok{\textbackslash{}n}\StringTok{or Bar Name"}\NormalTok{: }\StringTok{"Spec\_Bean\_Origin\_or\_Bar\_Name"}\NormalTok{,}
+                        \StringTok{"Review}\CharTok{\textbackslash{}n}\StringTok{Date"}\NormalTok{: }\StringTok{"Review\_Date"}\NormalTok{,}
+                        \StringTok{"Cocoa}\CharTok{\textbackslash{}n}\StringTok{Percent"}\NormalTok{: }\StringTok{"Cocoa\_Percent"}\NormalTok{,}
+                        \StringTok{"Company}\CharTok{\textbackslash{}n}\StringTok{Location"}\NormalTok{: }\StringTok{"Company\_Location"}\NormalTok{,}
+                        \StringTok{"Bean}\CharTok{\textbackslash{}n}\StringTok{Type"}\NormalTok{: }\StringTok{"Bean\_Type"}\NormalTok{,}
+                        \StringTok{"Broad Bean}\CharTok{\textbackslash{}n}\StringTok{Origin"}\NormalTok{: }\StringTok{"Broad\_Bean\_Origin"}
+\NormalTok{                       \})}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{c+c1}{\PYZsh{} put here your code}
+\end{Verbatim}
+
+    \textbf{Problem:}
+
+Use the pandas data frame function info() is used in order to quickly
+check which data types are available and if data is missing. Do you note
+something strange?
+
+\textbf{Answer:}
+
+    When looking at the missing values, only the features
+Broad\_Bean\_Origin and Bean\_Type are containing one missing value out
+of 1795 total samples. However, when looking at the data frame head, the
+first five rows of feature Bean\_Type are empty and should be therefore
+count as missing value.
+
+Since we don't know exactly what is the content of the first entry
+Bean\_Type, we can fetched it in order to check its value and to use
+this for replacing these values with NaN.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+    
+\NormalTok{    missing\_val\_indication\_bean\_type }\OperatorTok{=}\NormalTok{ df.Bean\_Type.values[}\DecValTok{0}\NormalTok{]}
+
+    \KeywordTok{def}\NormalTok{ replace\_with\_nan(missing\_val\_indication, current\_val):}
+    \ControlFlowTok{if}\NormalTok{ current\_val }\OperatorTok{==}\NormalTok{ missing\_val\_indication:}
+        \ControlFlowTok{return}\NormalTok{ np.nan}
+    \ControlFlowTok{else}\NormalTok{:}
+        \ControlFlowTok{return}\NormalTok{ current\_val}
+
+    \CommentTok{\# replace missing value of Bean\_Type with np.nan}
+\NormalTok{    df[}\StringTok{"Bean\_Type"}\NormalTok{] }\OperatorTok{=}\NormalTok{ df[}\StringTok{"Bean\_Type"}\NormalTok{].}\BuiltInTok{apply}\NormalTok{(}\KeywordTok{lambda}\NormalTok{ x: }
+\NormalTok{                                        replace\_with\_nan(missing\_val\_indication\_bean\_type, x))}
+\end{Highlighting}
+\end{Shaded}
+
+    \textbf{Problem:}
+
+Find all categorical features.
+
+\textbf{Answer:}
+
+    \begin{Shaded}
+\begin{Highlighting}[]
+    \CommentTok{\# get list of categorical features}
+\NormalTok{    list\_categorical\_cols }\OperatorTok{=} \BuiltInTok{list}\NormalTok{(df.columns[df.dtypes }\OperatorTok{==}\NormalTok{ np.}\BuiltInTok{object}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{c+c1}{\PYZsh{} put your code here}
+\end{Verbatim}
+
+    \textbf{Problem:}
+
+Find all numerical features
+
+\textbf{Answer:}
+
+    \begin{Shaded}
+\begin{Highlighting}[]
+    \CommentTok{\# get list of numerical features}
+\NormalTok{    list\_numerical\_cols }\OperatorTok{=} \BuiltInTok{list}\NormalTok{(df.columns[df.dtypes }\OperatorTok{!=}\NormalTok{ np.}\BuiltInTok{object}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{c+c1}{\PYZsh{} put your code here}
+\end{Verbatim}
+
+    \subsubsection{Cleaning Data with
+Pandas}\label{cleaning-data-with-pandas}
+
+    \textbf{Problem:}
+
+Try to produce the following dataframe
+
+numbers
+
+nums
+
+colors
+
+other\_column
+
+0
+
+\#23
+
+23
+
+green
+
+0
+
+1
+
+\#24
+
+24
+
+red
+
+1
+
+2
+
+\#18
+
+18
+
+yellow
+
+0
+
+3
+
+\#14
+
+14
+
+orange
+
+2
+
+4
+
+\#12
+
+NaN
+
+purple
+
+1
+
+5
+
+\#10
+
+XYZ
+
+blue
+
+0
+
+6
+
+\#35
+
+35
+
+pink
+
+2
+
+\textbf{Answer:}
+
+    \begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OperatorTok{=}\NormalTok{ pd.DataFrame(\{}\StringTok{"numbers"}\NormalTok{: [}\StringTok{"\#23"}\NormalTok{, }\StringTok{"\#24"}\NormalTok{, }\StringTok{"\#18"}\NormalTok{, }\StringTok{"\#14"}\NormalTok{, }\StringTok{"\#12"}\NormalTok{, }\StringTok{"\#10"}\NormalTok{, }\StringTok{"\#35"}\NormalTok{],}
+                   \StringTok{"nums"}\NormalTok{: [}\StringTok{"23"}\NormalTok{, }\StringTok{"24"}\NormalTok{, }\StringTok{"18"}\NormalTok{, }\StringTok{"14"}\NormalTok{, np.nan, }\StringTok{"XYZ"}\NormalTok{, }\StringTok{"35"}\NormalTok{],}
+                   \StringTok{"colors"}\NormalTok{: [}\StringTok{"green"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{, }\StringTok{"orange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"pink"}\NormalTok{],}
+                   \StringTok{"other\_column"}\NormalTok{: [}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{]\})}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{c+c1}{\PYZsh{} put your code here}
+\end{Verbatim}
+
+    \textbf{Problem:}
+
+What would happen if we wanted to try and compute the mean of numbers?
+
+\textbf{Answer:}
+
+    \begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\StringTok{"numbers"}\NormalTok{].mean()}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{c+c1}{\PYZsh{} put your code here}
+\end{Verbatim}
+
+    \textbf{Problem:}
+
+Is there anything wrong with the previous question? Why? How can you
+solve the error?
+
+\textbf{Answer:}
+
+    You have first of all convert all the string like `\#32' into numbers.
+
+    \subsection{Feature Normalization}\label{feature-normalization}
+
+    Many machine learning algorithms require that the selected features are
+on the same scale for optimal performance, this process is called
+``Feature Normalization'' and is the subject of this paragraph.
+
+Data Normalization is a common practice in machine learning which
+consists of transforming numeric columns to a common scale. In machine
+learning, some feature values differ from others multiple times. The
+features with higher values will dominate the leaning process. However,
+it does not mean those variables are more important to predict the
+outcome of the model. Data normalization transforms multiscaled data to
+the same scale. After normalization, all variables have a similar
+influence on the model, improving the stability and performance of the
+learning algorithm.
+
+There are multiple normalization techniques in statistics. In this
+notebook, we will cover the most important ones:
+
+\begin{itemize}
+\tightlist
+\item
+  The maximum absolute scaling
+\item
+  The min-max feature scaling
+\item
+  The z-score method
+\end{itemize}
+
+    \subsubsection{The maximum absolute
+scaling}\label{the-maximum-absolute-scaling}
+
+The maximum absolute scaling rescales each feature between -1 and 1 by
+dividing every observation by its maximum absolute value.
+
+\[
+x_{new} = \frac{x_{old}}{\max \vert x_{old} \vert}
+\]
+
+    \subsubsection{The min-max feature
+scaling}\label{the-min-max-feature-scaling}
+
+The min-max approach (often called normalization) rescales the feature
+to a fixed range of {[}0,1{]} by subtracting the minimum value of the
+feature and then dividing by the range:
+
+\[
+x_{new} = \frac{x_{old}-x_{min}}{x_{max}-x_{min}}
+\]
+
+The min-max scaling procedure is implemented in scikit-learn and can be
+used as follows:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}71}]:} \PY{c+c1}{\PYZsh{}}
+         \PY{c+c1}{\PYZsh{} Here we have to load the file \PYZsq{}salary\PYZus{}vs\PYZus{}age\PYZus{}1.csv\PYZsq{}}
+         \PY{c+c1}{\PYZsh{}}
+         \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{google.colab}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n+nb}{str}\PY{p}{(}\PY{n}{get\PYZus{}ipython}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{k+kn}{from} \PY{n+nn}{google}\PY{n+nn}{.}\PY{n+nn}{colab} \PY{k+kn}{import} \PY{n}{files}
+             \PY{n}{uploaded} \PY{o}{=} \PY{n}{files}\PY{o}{.}\PY{n}{upload}\PY{p}{(}\PY{p}{)}
+             \PY{n}{path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}
+         \PY{k}{else}\PY{p}{:}
+             \PY{n}{path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}77}]:} \PY{c+c1}{\PYZsh{} Load the Pandas libraries with alias \PYZsq{}pd\PYZsq{} }
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd} 
+         \PY{c+c1}{\PYZsh{} Read data from file \PYZsq{}salary\PYZus{}vs\PYZus{}age\PYZus{}1.csv\PYZsq{} }
+         \PY{c+c1}{\PYZsh{} (in the same directory that your python process is based)}
+         \PY{c+c1}{\PYZsh{} Control delimiters, with read\PYZus{}table }
+         \PY{n}{df1} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}table}\PY{p}{(}\PY{n}{path} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{salary\PYZus{}vs\PYZus{}age\PYZus{}1.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{;}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+         \PY{c+c1}{\PYZsh{} Preview the first 5 lines of the loaded data }
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{df1}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{columns\PYZus{}titles} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Salary}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+         \PY{n}{df2}\PY{o}{=}\PY{n}{df1}\PY{o}{.}\PY{n}{reindex}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{columns\PYZus{}titles}\PY{p}{)}
+         \PY{n}{df2}
+         
+         \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Salary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Salary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{l+m+mi}{1000} 
+         \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+         \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}
+         \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}
+         \PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{df2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{5}
+         \PY{n}{df2}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   Age  Salary
+0   25  135000
+1   27  105000
+2   30  105000
+3   35  220000
+4   40  300000
+
+    \end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}77}]:}    Salary  Age  Age2    Age3      Age4        Age5
+         0   135.0   25   625   15625    390625     9765625
+         1   105.0   27   729   19683    531441    14348907
+         2   105.0   30   900   27000    810000    24300000
+         3   220.0   35  1225   42875   1500625    52521875
+         4   300.0   40  1600   64000   2560000   102400000
+         5   270.0   45  2025   91125   4100625   184528125
+         6   265.0   50  2500  125000   6250000   312500000
+         7   260.0   55  3025  166375   9150625   503284375
+         8   240.0   60  3600  216000  12960000   777600000
+         9   265.0   65  4225  274625  17850625  1160290625
+\end{Verbatim}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}78}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{MinMaxScaler}
+         
+         \PY{n}{mms} \PY{o}{=} \PY{n}{MinMaxScaler}\PY{p}{(}\PY{p}{)}
+         \PY{n}{df3} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{mms}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{df2}\PY{p}{)}\PY{p}{)}
+         \PY{n}{df3}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}78}]:}           0      1         2         3         4         5
+         0  0.153846  0.000  0.000000  0.000000  0.000000  0.000000
+         1  0.000000  0.050  0.028889  0.015668  0.008065  0.003984
+         2  0.000000  0.125  0.076389  0.043919  0.024019  0.012633
+         3  0.589744  0.250  0.166667  0.105212  0.063574  0.037162
+         4  1.000000  0.375  0.270833  0.186776  0.124248  0.080515
+         5  0.846154  0.500  0.388889  0.291506  0.212486  0.151898
+         6  0.820513  0.625  0.520833  0.422297  0.335588  0.263127
+         7  0.794872  0.750  0.666667  0.582046  0.501718  0.428951
+         8  0.692308  0.875  0.826389  0.773649  0.719895  0.667377
+         9  0.820513  1.000  1.000000  1.000000  1.000000  1.000000
+\end{Verbatim}
+    \subsubsection{Z-Score}\label{z-score}
+
+The \textbf{z-score} method (often called \textbf{standardization})
+transforms the data into a distribution with a mean of 0 and a standard
+deviation of 1. Each standardized value is computed by subtracting the
+mean of the corresponding feature and then dividing by the standard
+deviation.
+
+\[
+x_{new} = \frac{x_{old} - \mu}{\sigma}
+\]
+
+Unlike min-max scaling, the z-score does not rescale the feature to a
+fixed range. The z-score typically ranges from -3.00 to 3.00 (more than
+99\% of the data) if the input is normally distributed.
+
+It is important to bear in mind that z-scores are not necessarily
+normally distributed. They just scale the data and follow the same
+distribution as the original input. This transformed distribution has a
+mean of 0 and a standard deviation of 1 and is going to be the standard
+normal distribution only if the input feature follows a normal
+distribution.
+
+Standardization can easily be achieved by using the built-in NumPy
+methods mean and std:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}79}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{13}\PY{p}{,} \PY{l+m+mi}{13}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{19}\PY{p}{,} \PY{l+m+mi}{22}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{X\PYZus{}std} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+         \PY{n}{X\PYZus{}std} \PY{o}{=} \PY{p}{(}\PY{n}{X} \PY{o}{\PYZhy{}} \PY{n}{X}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{n}{X}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{X\PYZus{}std}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-1.39443338 -1.19522861 -1.19522861 -0.19920477  0.          0.
+  0.39840954  0.5976143   1.19522861  1.79284291]
+
+    \end{Verbatim}
+
+    Or simply using the specific function of the stats module of scipy
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}80}]:} \PY{k+kn}{import} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k}{as} \PY{n+nn}{stats}
+         
+         \PY{n}{stats}\PY{o}{.}\PY{n}{zscore}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}80}]:} array([-1.39443338, -1.19522861, -1.19522861, -0.19920477,  0.        ,
+                 0.        ,  0.39840954,  0.5976143 ,  1.19522861,  1.79284291])
+\end{Verbatim}
+    Standardization is very useful with gradient descent learning. In this
+case the optimizer has to go through fewer steps to find a good or
+optimal solution (the global cost minimum).
+
+    Similar to the MinMaxScaler class, scikit-learn also implements a class
+for standardization:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}81}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}
+         
+         \PY{n}{stdsc} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}
+         \PY{n}{df4} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{stdsc}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{df2}\PY{p}{)}\PY{p}{)}
+         \PY{n}{df4}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}81}]:}           0         1         2         3         4         5
+         0 -1.170242 -1.359724 -1.189131 -1.041783 -0.920815 -0.824435
+         1 -1.601005 -1.210304 -1.102065 -0.994071 -0.895974 -0.812022
+         2 -1.601005 -0.986174 -0.958907 -0.908042 -0.846835 -0.785069
+         3  0.050256 -0.612623 -0.686823 -0.721391 -0.725003 -0.708630
+         4  1.198959 -0.239072 -0.372880 -0.473014 -0.538122 -0.573535
+         5  0.768195  0.134478 -0.017078 -0.154092 -0.266345 -0.351091
+         6  0.696401  0.508029  0.380582  0.244194  0.112820 -0.004480
+         7  0.624608  0.881579  0.820102  0.730661  0.624511  0.512260
+         8  0.337432  1.255130  1.301481  1.314127  1.296512  1.255243
+         9  0.696401  1.628681  1.824719  2.003411  2.159252  2.291760
+\end{Verbatim}
+    \subsection{Feature Analysis}\label{feature-analysis}
+
+    \subsubsection{Overfitting and Strategies for
+Mitigation}\label{overfitting-and-strategies-for-mitigation}
+
+When evaluating the performance of a machine learning model, a
+significant discrepancy between its performance on the training dataset
+and the test dataset is a strong indication of \textbf{overfitting}. As
+discussed in Chapter X, overfitting occurs when a model captures the
+noise or idiosyncrasies of the training data rather than the underlying
+patterns. In other words, the model becomes overly tailored to the
+specific observations in the training dataset, thereby failing to
+generalize effectively to new, unseen data. This phenomenon is often
+described as the model exhibiting \textbf{high variance}.
+
+The root cause of overfitting can frequently be traced to the model's
+complexity. A model that is too intricate for the given training data is
+likely to overfit, as it has a higher capacity to memorize the data
+rather than learn generalized patterns. Addressing overfitting is
+essential to ensure that a model performs well not only on the training
+dataset but also on new data in real-world scenarios.
+
+\paragraph{Common Strategies to Reduce
+Overfitting}\label{common-strategies-to-reduce-overfitting}
+
+Several techniques can be employed to mitigate overfitting and improve a
+model's generalization to unseen data:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Collecting More Training Data}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Increasing the size of the training dataset allows the model to
+    better discern underlying patterns and reduce the impact of noise.
+    However, this approach is often impractical due to constraints in
+    time, cost, or data availability.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Introducing Regularization}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Regularization involves incorporating a penalty term into the
+    model's objective function to discourage complexity. By doing so,
+    the model is incentivized to use simpler solutions, which are less
+    likely to overfit the training data.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Choosing a Simpler Model}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Opting for a model with fewer parameters or a less complex
+    architecture can reduce the risk of overfitting. Simplifying the
+    model limits its ability to capture noise in the training data,
+    thereby improving generalization.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Reducing Dimensionality}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    High-dimensional data can exacerbate overfitting due to the curse of
+    dimensionality. Techniques such as \textbf{feature selection} or
+    \textbf{feature extraction} can reduce the number of features,
+    simplifying the model and requiring fewer parameters to be fitted.
+  \end{itemize}
+\end{enumerate}
+
+    \subsubsection{Feature Selection and Feature
+Extraction}\label{feature-selection-and-feature-extraction}
+
+Feature selection and feature extraction are two distinct approaches to
+reducing the dimensionality of a dataset. Both techniques aim to
+simplify a machine learning model, improve its performance, and reduce
+the risk of overfitting by addressing the challenges associated with
+high-dimensional data. While these methods share the common goal of
+enhancing a model's generalization capabilities, their methodologies
+differ fundamentally.
+
+\paragraph{Feature Selection}\label{feature-selection}
+
+\textbf{Feature selection} involves identifying and retaining a subset
+of the original features (variables) that are most relevant to the
+target variable. Rather than transforming the data, feature selection
+works within the existing feature space, discarding irrelevant or
+redundant features. This approach helps reduce noise in the data while
+maintaining the interpretability of the original features.
+
+\textbf{Types of Feature Selection Methods}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Filter Methods}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Use statistical measures to assess the relationship between each
+    feature and the target variable.
+  \item
+    Examples:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Pearson correlation for continuous variables.
+    \item
+      Chi-squared tests for categorical variables.
+    \item
+      Mutual information for non-linear relationships.
+    \end{itemize}
+  \item
+    Filter methods are computationally efficient and independent of the
+    machine learning model.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Wrapper Methods}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Use a predictive model to evaluate the utility of feature subsets.
+  \item
+    Examples:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Recursive Feature Elimination (RFE): Iteratively removes the least
+      important features based on model performance.
+    \item
+      Forward Selection: Starts with no features and adds them one by
+      one.
+    \item
+      Backward Elimination: Starts with all features and removes them
+      one by one.
+    \end{itemize}
+  \item
+    Wrapper methods are computationally intensive but often yield better
+    results since they are tailored to the specific model.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Embedded Methods}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Perform feature selection as part of the model training process.
+  \item
+    Examples:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Regularization techniques like Lasso (L1) and Ridge (L2)
+      regression automatically shrink the coefficients of irrelevant
+      features to zero or near zero.
+    \item
+      Feature importance scores in decision trees and ensemble methods
+      (e.g., Random Forest, XGBoost).
+    \end{itemize}
+  \item
+    Embedded methods balance computational efficiency with
+    model-specific relevance.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Benefits of Feature Selection}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Model Simplification}: Reduces the number of features, making
+  the model easier to understand and interpret.
+\item
+  \textbf{Reduced Overfitting}: Eliminates irrelevant features that may
+  introduce noise.
+\item
+  \textbf{Improved Efficiency}: Reduces computational cost during
+  training and inference.
+\end{itemize}
+
+    \paragraph{Feature Extraction}\label{feature-extraction}
+
+\textbf{Feature extraction} involves creating new features by
+transforming or combining the existing features into a lower-dimensional
+space. Unlike feature selection, which works within the original feature
+space, feature extraction generates entirely new features. These new
+features are often linear or non-linear combinations of the original
+features, designed to capture the most informative aspects of the data.
+
+\textbf{Common Feature Extraction Techniques}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Principal Component Analysis (PCA)}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A linear technique that transforms the data into orthogonal
+    components, ranked by the amount of variance they explain.
+  \item
+    The first few principal components capture the majority of the
+    variance in the data, enabling dimensionality reduction.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Linear Discriminant Analysis (LDA)}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A supervised technique that projects data into a lower-dimensional
+    space to maximize class separability.
+  \item
+    Useful for classification tasks.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{t-Distributed Stochastic Neighbor Embedding (t-SNE)}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A non-linear technique for visualizing high-dimensional data in 2D
+    or 3D.
+  \item
+    Preserves local relationships while reducing dimensionality.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Autoencoders}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Neural networks designed to learn compressed representations of
+    data.
+  \item
+    The encoder reduces the dimensionality, while the decoder
+    reconstructs the original data from the compressed representation.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Benefits of Feature Extraction}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Enhanced Generalization}: Captures underlying patterns or
+  structures in the data.
+\item
+  \textbf{Reduced Dimensionality}: Transforms data into a compact
+  representation while retaining important information.
+\item
+  \textbf{Applicability to High-Dimensional Data}: Effective when the
+  number of original features is extremely large (e.g., image or text
+  data).
+\end{itemize}
+
+    \paragraph{Feature Selection vs.~Feature
+Extraction}\label{feature-selection-vs.-feature-extraction}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2688}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3656}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3656}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Aspect
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Feature Selection
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Feature Extraction
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Objective} & Retain a subset of original features. & Create new
+features by transforming data. \\
+\textbf{Output} & Subset of original features. & New features in a
+transformed space. \\
+\textbf{Interpretability} & Retains original feature meanings. & May
+lose interpretability due to transformation. \\
+\textbf{Examples} & Filter, wrapper, and embedded methods. & PCA, LDA,
+t-SNE, autoencoders. \\
+\textbf{Complexity} & Relatively simple. & May involve complex
+transformations. \\
+\end{longtable}
+
+\paragraph{When to Use Feature Selection and Feature
+Extraction}\label{when-to-use-feature-selection-and-feature-extraction}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Feature Selection}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Use when interpretability of features is critical (e.g., medical
+    diagnosis).
+  \item
+    Ideal when the dataset contains many irrelevant or redundant
+    features.
+  \end{itemize}
+\item
+  \textbf{Feature Extraction}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Use when the dataset is high-dimensional and interpretability is
+    less important.
+  \item
+    Suitable for tasks like image processing, natural language
+    processing, and large-scale datasets.
+  \end{itemize}
+\end{itemize}
+
+Both feature selection and feature extraction are powerful tools for
+dimensionality reduction. The choice between them depends on the
+specific problem, the nature of the dataset, and the need for
+interpretability. In practice, these techniques are often used in
+combination to preprocess data and enhance the performance of machine
+learning models.
+
+    \subsubsection{Sequential Backward Selection
+(SBS)}\label{sequential-backward-selection-sbs}
+
+Sequential Backward Selection (SBS) is a \textbf{\emph{wrapper}} method
+for feature selection. It starts with the full set of features and
+sequentially removes the least significant feature (one at a time) based
+on a specified evaluation metric, such as accuracy, mean squared error
+(MSE), or another performance measure of a model. The goal is to reduce
+the feature set while maintaining or improving the model's performance.
+
+\begin{quote}
+Note : A \textbf{\emph{wrapper}} method in feature selection is an
+approach that evaluates subsets of features by actually training and
+testing a model on them. The selection process is guided by the model's
+performance on a specified evaluation metric, such as accuracy,
+precision, or mean squared error (MSE). Wrapper methods are
+computationally intensive but often yield better feature subsets
+compared to filter methods because they directly optimize for model
+performance.
+\end{quote}
+
+\textbf{Steps in SBS}:
+
+\begin{itemize}
+\tightlist
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    \textbf{Start with all features}: Train a model using all the
+    available features.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    \textbf{Evaluate feature importance}: Use a performance metric
+    (e.g., cross-validated accuracy or MSE) to rank features.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    \textbf{Remove the least significant feature}: Eliminate the feature
+    whose removal results in the smallest degradation (or the most
+    improvement) in the performance metric.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{3}
+  \tightlist
+  \item
+    \textbf{Repeat}: Continue the process until a predefined number of
+    features is reached or performance degrades significantly.
+  \end{enumerate}
+\end{itemize}
+
+SBS is computationally expensive for high-dimensional datasets but is
+effective in situations with a limited number of features or where
+interpretability is crucial.
+
+    \textbf{Example: Sequential Backward Selection with Financial Data}
+
+Let's apply SBS to a financial dataset containing macroeconomic and
+market indicators to predict stock returns.
+
+\textbf{Dataset}:
+
+Suppose we have the following predictors:
+
+\begin{itemize}
+\tightlist
+\item
+  GDP Growth Rate
+\item
+  Inflation Rate
+\item
+  Unemployment Rate
+\item
+  Interest Rate
+\item
+  S\&P 500 Returns
+\item
+  Bond Yield Spread
+\item
+  Oil Prices
+\end{itemize}
+
+The target variable is the 1-month forward return of a specific stock.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{feature\PYZus{}selection} \PY{k+kn}{import} \PY{n}{SequentialFeatureSelector}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{LinearRegression}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k+kn}{import} \PY{n}{mean\PYZus{}squared\PYZus{}error}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} Example financial dataset}
+        \PY{n}{data} \PY{o}{=} \PY{p}{\PYZob{}}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GDP Growth}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{2.1}\PY{p}{,} \PY{l+m+mf}{1.9}\PY{p}{,} \PY{l+m+mf}{2.3}\PY{p}{,} \PY{l+m+mf}{2.0}\PY{p}{,} \PY{l+m+mf}{2.2}\PY{p}{]}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Inflation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{1.8}\PY{p}{,} \PY{l+m+mf}{2.0}\PY{p}{,} \PY{l+m+mf}{1.9}\PY{p}{,} \PY{l+m+mf}{1.7}\PY{p}{,} \PY{l+m+mf}{2.1}\PY{p}{]}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unemployment}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{4.0}\PY{p}{,} \PY{l+m+mf}{4.1}\PY{p}{,} \PY{l+m+mf}{3.9}\PY{p}{,} \PY{l+m+mf}{4.0}\PY{p}{,} \PY{l+m+mf}{4.1}\PY{p}{]}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Interest Rate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{2.6}\PY{p}{,} \PY{l+m+mf}{2.7}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{2.6}\PY{p}{]}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{S\PYZam{}P 500 Returns}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{0.03}\PY{p}{,} \PY{l+m+mf}{0.02}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+m+mf}{0.04}\PY{p}{,} \PY{l+m+mf}{0.03}\PY{p}{]}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bond Yield Spread}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{1.2}\PY{p}{,} \PY{l+m+mf}{1.1}\PY{p}{,} \PY{l+m+mf}{1.3}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{1.2}\PY{p}{]}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Oil Prices}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{60}\PY{p}{,} \PY{l+m+mi}{62}\PY{p}{,} \PY{l+m+mi}{59}\PY{p}{,} \PY{l+m+mi}{61}\PY{p}{,} \PY{l+m+mi}{63}\PY{p}{]}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Stock Return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+m+mf}{0.03}\PY{p}{,} \PY{l+m+mf}{0.02}\PY{p}{,} \PY{l+m+mf}{0.04}\PY{p}{,} \PY{l+m+mf}{0.06}\PY{p}{]}
+        \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Features and target}
+        \PY{n}{X} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Stock Return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{y} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Stock Return}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{\PYZsh{} Train\PYZhy{}test split}
+        \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{\PYZsh{} Linear Regression model}
+        \PY{n}{model} \PY{o}{=} \PY{n}{LinearRegression}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{Sequential Backward Selection}
+        
+        \PY{l+s+sd}{The SequentialFeatureSelector in sklearn is a feature selection tool that iteratively selects or }
+        \PY{l+s+sd}{eliminates features based on model performance. It works as a wrapper method, using a specified }
+        \PY{l+s+sd}{predictive model to evaluate subsets of features and optimize for a given scoring metric (e.g., }
+        \PY{l+s+sd}{accuracy, mean squared error).}
+        
+        \PY{l+s+sd}{Key Features:}
+        
+        \PY{l+s+sd}{    \PYZhy{} Direction:}
+        \PY{l+s+sd}{        \PYZhy{} forward: Starts with no features and adds one at a time.}
+        \PY{l+s+sd}{        \PYZhy{} backward: Starts with all features and removes one at a time.}
+        \PY{l+s+sd}{    \PYZhy{} Scoring Metric: Evaluates feature subsets using metrics like accuracy or MSE (or custom scoring functions).}
+        \PY{l+s+sd}{    \PYZhy{} Cross\PYZhy{}Validation: Supports cross\PYZhy{}validation for robust performance evaluation during feature selection.}
+        \PY{l+s+sd}{    \PYZhy{} Customizable Subset Size: Allows specifying the desired number of features to select using the n\PYZus{}features\PYZus{}to\PYZus{}select parameter.}
+        
+        \PY{l+s+sd}{Usage:}
+        
+        \PY{l+s+sd}{    \PYZhy{} Define a predictive model (e.g., LinearRegression, RandomForestClassifier).}
+        \PY{l+s+sd}{    \PYZhy{} Initialize SequentialFeatureSelector with the model, direction, scoring metric, and desired number of features.}
+        \PY{l+s+sd}{    \PYZhy{} Fit the selector to the dataset to identify the optimal feature subset.}
+        
+        \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}} 
+        \PY{n}{sbs} \PY{o}{=} \PY{n}{SequentialFeatureSelector}\PY{p}{(}
+            \PY{n}{model}\PY{p}{,} \PY{n}{direction}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{backward}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{neg\PYZus{}mean\PYZus{}squared\PYZus{}error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{n\PYZus{}features\PYZus{}to\PYZus{}select}\PY{o}{=}\PY{l+m+mi}{3}
+        \PY{p}{)}
+        \PY{n}{sbs}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} SequentialFeatureSelector(cv=3, direction='backward',
+                                  estimator=LinearRegression(), n\_features\_to\_select=3,
+                                  scoring='neg\_mean\_squared\_error')
+\end{Verbatim}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{\PYZsh{} Selected features}
+         \PY{n}{selected\PYZus{}features} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{columns}\PY{p}{[}\PY{n}{sbs}\PY{o}{.}\PY{n}{get\PYZus{}support}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Selected Features:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{selected\PYZus{}features}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Selected Features: Index(['GDP Growth', 'Inflation', 'Interest Rate'], dtype='object')
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{\PYZsh{} Evaluate performance with reduced features}
+         \PY{n}{X\PYZus{}train\PYZus{}reduced} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{p}{[}\PY{n}{selected\PYZus{}features}\PY{p}{]}
+         \PY{n}{X\PYZus{}test\PYZus{}reduced} \PY{o}{=} \PY{n}{X\PYZus{}test}\PY{p}{[}\PY{n}{selected\PYZus{}features}\PY{p}{]}
+         \PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train\PYZus{}reduced}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+         \PY{n}{predictions} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}reduced}\PY{p}{)}
+         \PY{n}{mse} \PY{o}{=} \PY{n}{mean\PYZus{}squared\PYZus{}error}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{predictions}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mean Squared Error with Selected Features:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{mse}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Mean Squared Error with Selected Features: 0.00039999999999999514
+
+    \end{Verbatim}
+
+    \subsection{Dimensionality Reduction}\label{dimensionality-reduction}
+
+    \subsubsection{The Curse of
+Dimensionality}\label{the-curse-of-dimensionality}
+
+In machine learning, the curse of dimensionality refers to the
+exponential increase in computational complexity and the sparsity of
+data as the number of dimensions (features) in a dataset grows. First
+described in the context of numerical analysis, this phenomenon has
+significant implications for machine learning models, particularly those
+involving distance-based metrics, density estimation, and optimization.
+
+\textbf{Key Challenges}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Data Sparsity}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    In high-dimensional spaces, data points become sparse. Intuitively,
+    as dimensions increase, the volume of the space grows exponentially,
+    but the number of data points often remains constant or grows
+    linearly. This sparsity makes it difficult to model meaningful
+    relationships between data points.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Distance Metrics Become Less Informative}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Many machine learning algorithms rely on distance metrics (e.g.,
+    Euclidean distance) to evaluate similarity between points. In
+    high-dimensional spaces, the differences in distances between the
+    nearest and farthest points tend to diminish, making it harder to
+    differentiate between data points.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Overfitting}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    High-dimensional datasets often contain redundant or irrelevant
+    features that do not contribute meaningful information. Including
+    these features can lead models to overfit the training data, as they
+    learn patterns that do not generalize well to new data.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Increased Computational Cost}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    High-dimensional data requires significantly more computational
+    resources for storage, processing, and model training. This can slow
+    down training and make real-time inference challenging.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  \textbf{Visualization Challenges}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Human intuition is limited to three dimensions. When working with
+    high-dimensional data, it becomes challenging to visualize and
+    interpret the relationships and distributions of data points.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Examples of Impact} - \textbf{K-Nearest Neighbors (KNN)}: In
+high-dimensional spaces, all points can appear equidistant, reducing the
+effectiveness of nearest-neighbor algorithms. - \textbf{Support Vector
+Machines (SVM)}: In high dimensions, finding an optimal hyperplane
+becomes computationally expensive and prone to overfitting without
+proper regularization. - \textbf{Clustering Algorithms}: Clustering
+methods like K-means rely on distance metrics, which lose effectiveness
+in high dimensions.
+
+\textbf{Approaches to Mitigate the Curse} To address the curse of
+dimensionality, several strategies are employed: 1.
+\textbf{Dimensionality Reduction}\\
+- Techniques like Principal Component Analysis (PCA), t-SNE, or
+autoencoders reduce the number of features while preserving the
+essential information.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Feature Selection}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Selecting the most relevant features based on their contribution to
+    the model's performance can help minimize redundancy and noise.
+  \end{itemize}
+\item
+  \textbf{Regularization}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Applying regularization techniques (e.g., L1/L2 penalties) reduces
+    overfitting by discouraging complex models that depend heavily on
+    high-dimensional feature spaces.
+  \end{itemize}
+\item
+  \textbf{Domain Knowledge}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Incorporating domain knowledge to engineer or select meaningful
+    features can reduce dimensionality and improve interpretability.
+  \end{itemize}
+\end{enumerate}
+
+    \subsubsection{A Simple Example}\label{a-simple-example}
+
+It turns out that many things behave very differently in
+high-dimensional space. For example, if you pick a random point in a
+unit square (a 1 × 1 square), it will have only about a 0.4\% chance of
+being located less than 0.001 from a border (in other words, it is very
+unlikely that a random point will be ``extreme'' along any dimension).
+But in a 10,000-dimensional unit hypercube (a 1 × 1 × ⋯ × 1 cube, with
+ten thousand 1s), this probability is greater than 99.999999\%. Most
+points in a high-dimensional hypercube are very close to the border.
+This means the distance between points increases on average. The mean
+distance of points from the center also grows as the dimensionality
+increases. Let's see a simple example\ldots{}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{\PYZsh{} The Curse of Dimensionality}
+         \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+         \PY{c+c1}{\PYZsh{} As the number of features (dimensions) increases in a dataset, the volume of the feature space grows exponentially.}
+         \PY{c+c1}{\PYZsh{} This can lead to challenges such as:}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} **Sparsity**: Data points are spread thinly across the space, making it harder to identify meaningful patterns.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} **Computational inefficiency**: Algorithms may become slow or unfeasible due to the large search space.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} **Overfitting**: Models may capture noise rather than meaningful patterns, reducing their generalizability.}
+         \PY{c+c1}{\PYZsh{} }
+         \PY{c+c1}{\PYZsh{} Let\PYZsq{}s start by visualizing the curse of dimensionality:}
+         
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt} 
+         \PY{c+c1}{\PYZsh{} Generates synthetic datasets for classification problems}
+         \PY{c+c1}{\PYZsh{} https://scikit\PYZhy{}learn.org/stable/modules/generated/sklearn.datasets.make\PYZus{}classification.html}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{make\PYZus{}classification}  
+         \PY{c+c1}{\PYZsh{} Generate datasets with increasing dimensions}
+         \PY{c+c1}{\PYZsh{} Each dataset has a specified number of dimensions, and we calculate the average distance of data points from the mean.}
+         
+         \PY{c+c1}{\PYZsh{} make\PYZus{}classification:}
+         \PY{c+c1}{\PYZsh{} This function generates a synthetic dataset useful for classification tasks. It allows control over:}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} `n\PYZus{}samples`: The number of samples (rows) in the dataset.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} `n\PYZus{}features`: Total number of features (columns) in the dataset. This includes both informative and non\PYZhy{}informative features.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} `n\PYZus{}informative`: The number of informative features, which contribute directly to the target labels. These features have predictive value.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} **Difference**: `n\PYZus{}features` represents the total features in the dataset, including noise and redundant features. `n\PYZus{}informative` is a subset of these features that are directly useful for prediction.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} `n\PYZus{}redundant`: Features that are linear combinations of the informative features and add no additional predictive value.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} `n\PYZus{}classes`: The number of distinct classes in the dataset.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} `random\PYZus{}state`: Ensures reproducibility by fixing the random seed.}
+         \PY{n}{dimensions} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{40}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{]}
+         \PY{n}{data\PYZus{}sparsity} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         
+         \PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n}{dimensions}\PY{p}{:}
+             \PY{c+c1}{\PYZsh{} Create synthetic data with \PYZsq{}d\PYZsq{} dimensions}
+             \PY{n}{X}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{make\PYZus{}classification}\PY{p}{(}\PY{n}{n\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{n\PYZus{}features}\PY{o}{=}\PY{n}{d}\PY{p}{,} \PY{n}{n\PYZus{}informative}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{n\PYZus{}redundant}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} Compute the average distance of points from the mean in this feature space}
+             \PY{n}{sparsity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{X} \PY{o}{\PYZhy{}} \PY{n}{X}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+             \PY{n}{data\PYZus{}sparsity}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{sparsity}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Plot the effect of increasing dimensions on data sparsity}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{dimensions}\PY{p}{,} \PY{n}{data\PYZus{}sparsity}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of Dimensions}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average Distance to Mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Curse of Dimensionality}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_108_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    This fact implies that highdimensional datasets are at risk of being
+very sparse: most training instances are likely to be far away from each
+other. Of course, this also means that a new instance will likely be far
+away from any training instance, making predictions much less reliable
+than in lower dimensions, since they will be based on much larger
+extrapolations. In short, the more dimensions the training set has, the
+greater the risk of overfitting it. In theory, one solution to the curse
+of dimensionality could be to increase the size of the training set to
+reach a sufficient density of training instances. Unfortunately, in
+practice, the number of training instances required to reach a given
+density grows exponentially with the number of dimensions.
+
+    \subsubsection{Projections}\label{projections}
+
+Projection is one of the most common techniques for dimensionality
+reduction. The idea is to map high-dimensional data into a
+lower-dimensional subspace, such as a plane or a line, in a way that
+preserves key properties of the data. This idea is based on the fact
+that in most real-world problems, training instances are not spread out
+uniformly across all dimensions. Many features are almost constant,
+while others are highly correlated. As a result, all training instances
+actually lie within (or close to) a much lower-dimensional subspace of
+the high-dimensional space.
+
+    \paragraph{Principal Component Analysis
+(PCA)}\label{principal-component-analysis-pca}
+
+Principal Component Analysis (PCA) is a foundational technique in the
+field of data analysis, statistics, and machine learning, employed to
+reduce the dimensionality of a dataset while preserving as much of its
+variability as possible. By identifying new orthogonal axes, or
+principal components, PCA transforms the data into a new coordinate
+system where the greatest variance lies along the first axis, the second
+greatest variance lies along the second axis, and so forth. This
+transformation serves to simplify the dataset, remove redundant
+features, and highlight latent structures in the data, making PCA a
+valuable tool in both exploratory data analysis and preprocessing for
+machine learning algorithms.
+
+The primary motivation for PCA is rooted in the challenges posed by
+high-dimensional data. In many practical scenarios, datasets contain
+numerous correlated features, leading to redundancy and difficulties in
+interpretation. Additionally, as the dimensionality of the dataset
+increases, computational efficiency and model performance often
+deteriorate, a phenomenon known as the ``curse of dimensionality.'' PCA
+addresses these challenges by projecting the data onto a
+lower-dimensional subspace, defined by the principal components, without
+a significant loss of information. The method relies on the mathematical
+framework of linear algebra and statistics, making it both theoretically
+elegant and computationally efficient.
+
+To fully understand PCA, we must derive its mathematical foundation. Let
+us consider a dataset \(\mathbf{X} \in \mathbb{R}^{n \times d}\), where
+\(n\) is the number of observations and \(d\) is the number of features.
+Each row of \(\mathbf{X}\) represents a data point, and each column
+represents a feature. The goal of PCA is to find a set of orthogonal
+axes, known as principal components, onto which the data can be
+projected, such that the variance of the projected data along these axes
+is maximized.
+
+    \paragraph{PCA using SVD}\label{pca-using-svd}
+
+\textbf{Simple Dataset Generation}
+
+\begin{itemize}
+\tightlist
+\item
+  Trigonometric functions (cos and sin) produce periodic patterns for
+  X{[}:, 0{]} and X{[}:, 1{]}.
+\item
+  Random angles ensure a spread of points along the trigonometric curve.
+\item
+  X{[}:, 2{]} combines the first two dimensions with specific weights
+  (w1 and w2) to simulate a dependent variable with added randomness.
+\end{itemize}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{\PYZsh{}}
+         \PY{c+c1}{\PYZsh{} Explanation:}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} The dataset is generated in three dimensions.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} The first two dimensions (X[:, 0] and X[:, 1]) are based on trigonometric functions of random angles.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} The third dimension (X[:, 2]) is created as a weighted linear combination of the first two dimensions, with added noise.}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} Noise is introduced to make the dataset more realistic by simulating measurement errors or natural variations.}
+         \PY{c+c1}{\PYZsh{}}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         
+         \PY{c+c1}{\PYZsh{} Set the random seed for reproducibility}
+         \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Number of data points to generate}
+         \PY{n}{m} \PY{o}{=} \PY{l+m+mi}{1000}
+         \PY{c+c1}{\PYZsh{} Coefficients for the linear combination in the Z dimension}
+         \PY{n}{w1}\PY{p}{,} \PY{n}{w2} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.3}
+         \PY{c+c1}{\PYZsh{} Noise level to add random variation to the data}
+         \PY{n}{noise} \PY{o}{=} \PY{l+m+mf}{0.1}
+         \PY{c+c1}{\PYZsh{} Generate random angles uniformly distributed between \PYZhy{}0.5 and (3π/2 \PYZhy{} 0.5)}
+         \PY{n}{angles} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{m}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{3} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5}
+         \PY{c+c1}{\PYZsh{} Initialize an empty 3D array to store the dataset}
+         \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Compute the X[:, 0] (first dimension) as a combination of sine and cosine functions of the angles}
+         \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{angles}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{angles}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{n}{noise} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n}{m}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+         \PY{c+c1}{\PYZsh{} Compute the X[:, 1] (second dimension) using a scaled sine function and adding noise}
+         \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{angles}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.7} \PY{o}{+} \PY{n}{noise} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n}{m}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
+         \PY{c+c1}{\PYZsh{} Compute the X[:, 2] (third dimension) as a linear combination of the first two dimensions plus noise}
+         \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n}{w1} \PY{o}{+} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{w2} \PY{o}{+} \PY{n}{noise} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n}{m}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{\PYZsh{} Create a 3D scatter plot of the dataset}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{111}\PY{p}{,} \PY{n}{projection}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Scatter plot with X[:, 0], X[:, 1], and X[:, 2]}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Data points}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Add labels to the axes}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X0 (Dimension 1)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X1 (Dimension 2)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}zlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X2 (Dimension 3)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Add a title and legend}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3D Dataset Visualization}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Show the plot}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_114_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    So how can you find the principal components of a training set? Luckily,
+there is a standard matrix factorization technique called Singular Value
+Decomposition (SVD) that can decompose the training set matrix X into
+the matrix multiplication of three matrices
+
+\[
+U \Sigma V^T 
+\] where \(V\) contains all the principal components that we are looking
+for. The following Python code uses NumPy's \texttt{svd()} function to
+obtain all the principal components of the training set, then extracts
+the first two PCs:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{\PYZsh{} Explanation:}
+         \PY{c+c1}{\PYZsh{} 1. The dataset is centered by subtracting its mean along each feature, making it zero\PYZhy{}centered.}
+         \PY{c+c1}{\PYZsh{} 2. SVD is performed to decompose the centered data into three components:}
+         \PY{c+c1}{\PYZsh{}    \PYZhy{} U contains the directions of the samples in the transformed space.}
+         \PY{c+c1}{\PYZsh{}    \PYZhy{} s holds the singular values, indicating the importance of each principal component.}
+         \PY{c+c1}{\PYZsh{}    \PYZhy{} Vt contains the principal directions (columns of Vt.T).}
+         \PY{c+c1}{\PYZsh{} 3. The first principal component (c1) is the direction along which the variance of the data is maximized.}
+         \PY{c+c1}{\PYZsh{} 4. The second principal component (c2) is orthogonal to the first and explains the second highest variance.}
+         
+         \PY{c+c1}{\PYZsh{} The principal components c1 and c2 can now be used for further analysis, such as projecting the data onto these axes.}
+         
+         \PY{c+c1}{\PYZsh{} Center the dataset by subtracting the mean of each feature (column)}
+         \PY{c+c1}{\PYZsh{} This ensures that the dataset has a mean of zero along each dimension}
+         \PY{n}{X\PYZus{}centered} \PY{o}{=} \PY{n}{X} \PY{o}{\PYZhy{}} \PY{n}{X}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Perform Singular Value Decomposition (SVD)}
+         \PY{c+c1}{\PYZsh{} np.linalg.svd decomposes a matrix as: X\PYZus{}centered = U * diag(s) * Vt}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} U: Matrix with left singular vectors (m x m, orthonormal)}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} s: Singular values (1D array of size min(m, n))}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} Vt: Transpose of the right singular vectors (n x n, orthonormal)}
+         \PY{n}{U}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{Vt} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{svd}\PY{p}{(}\PY{n}{X\PYZus{}centered}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Extract the first principal component}
+         \PY{c+c1}{\PYZsh{} The first column of V (or Vt.T) corresponds to the direction of maximum variance}
+         \PY{n}{c1} \PY{o}{=} \PY{n}{Vt}\PY{o}{.}\PY{n}{T}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+         
+         \PY{c+c1}{\PYZsh{} Extract the second principal component}
+         \PY{c+c1}{\PYZsh{} The second column of V (or Vt.T) corresponds to the direction of the second highest variance}
+         \PY{n}{c2} \PY{o}{=} \PY{n}{Vt}\PY{o}{.}\PY{n}{T}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+         
+         \PY{c+c1}{\PYZsh{} Display the results}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{First Principal Component (c1):}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{c1}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Second Principal Component (c2):}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{c2}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+First Principal Component (c1):
+ [0.94490587 0.27289805 0.18077487]
+Second Principal Component (c2):
+ [-0.31404016  0.91156632  0.26537827]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         
+         \PY{c+c1}{\PYZsh{} Calculate the mean of the dataset for centering}
+         \PY{n}{mean} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Scale factors for the principal directions to make them visible}
+         \PY{n}{scale\PYZus{}factor} \PY{o}{=} \PY{l+m+mi}{2}
+         
+         \PY{c+c1}{\PYZsh{} Calculate endpoints of the principal directions}
+         \PY{c+c1}{\PYZsh{} c1 and c2 are scaled and anchored at the mean}
+         \PY{n}{pc1\PYZus{}end} \PY{o}{=} \PY{n}{mean} \PY{o}{+} \PY{n}{scale\PYZus{}factor} \PY{o}{*} \PY{n}{c1}
+         \PY{n}{pc2\PYZus{}end} \PY{o}{=} \PY{n}{mean} \PY{o}{+} \PY{n}{scale\PYZus{}factor} \PY{o}{*} \PY{n}{c2}
+         
+         \PY{c+c1}{\PYZsh{} Create a 3D scatter plot for the dataset}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{111}\PY{p}{,} \PY{n}{projection}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Plot the dataset points}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Data Points}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Plot the first principal direction (c1) as a red arrow}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{quiver}\PY{p}{(}
+             \PY{n}{mean}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{mean}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{mean}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}  \PY{c+c1}{\PYZsh{} Starting point (mean)}
+             \PY{n}{c1}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n}{scale\PYZus{}factor}\PY{p}{,} \PY{n}{c1}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{scale\PYZus{}factor}\PY{p}{,} \PY{n}{c1}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{*} \PY{n}{scale\PYZus{}factor}\PY{p}{,}  \PY{c+c1}{\PYZsh{} Direction (scaled)}
+             \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Principal Direction 1 (c1)}\PY{l+s+s1}{\PYZsq{}}
+         \PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Plot the second principal direction (c2) as a green arrow}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{quiver}\PY{p}{(}
+             \PY{n}{mean}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{mean}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{mean}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}  \PY{c+c1}{\PYZsh{} Starting point (mean)}
+             \PY{n}{c2}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n}{scale\PYZus{}factor}\PY{p}{,} \PY{n}{c2}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{scale\PYZus{}factor}\PY{p}{,} \PY{n}{c2}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{*} \PY{n}{scale\PYZus{}factor}\PY{p}{,}  \PY{c+c1}{\PYZsh{} Direction (scaled)}
+             \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Principal Direction 2 (c2)}\PY{l+s+s1}{\PYZsq{}}
+         \PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Add axis labels}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X0 (Dimension 1)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X1 (Dimension 2)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}zlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X2 (Dimension 3)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Add a title and legend}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3D Dataset with Principal Directions}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Show the plot}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_117_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The following code constructs a diagonal matrix \(S\) using the singular
+values \(s\) obtained from Singular Value Decomposition (SVD).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{\PYZsh{} Explanation:}
+         \PY{c+c1}{\PYZsh{} 1. S is part of the SVD decomposition: X\PYZus{}centered = U * S * V\PYZca{}T.}
+         \PY{c+c1}{\PYZsh{} 2. It ensures S has the correct shape (m x n) for compatibility with U (m x m) and V\PYZca{}T (n x n).}
+         \PY{c+c1}{\PYZsh{} 3. This step is essential if you plan to reconstruct the original dataset or analyze the singular values.}
+         \PY{c+c1}{\PYZsh{}}
+         \PY{c+c1}{\PYZsh{} Get the dimensions of the original dataset}
+         \PY{c+c1}{\PYZsh{} m: number of data points (rows)}
+         \PY{c+c1}{\PYZsh{} n: number of features (columns)}
+         \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}
+         
+         \PY{c+c1}{\PYZsh{} Initialize an empty matrix S of the same shape as the centered dataset}
+         \PY{c+c1}{\PYZsh{} S will store the singular values in a diagonal matrix format}
+         \PY{n}{S} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{X\PYZus{}centered}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Populate the top\PYZhy{}left n x n submatrix of S with the singular values}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} np.diag(s) creates a square diagonal matrix from the singular values s}
+         \PY{c+c1}{\PYZsh{} \PYZhy{} S[:n, :n] ensures only the first n rows and columns are filled, matching the shape of V\PYZca{}T}
+         \PY{n}{S}\PY{p}{[}\PY{p}{:}\PY{n}{n}\PY{p}{,} \PY{p}{:}\PY{n}{n}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+    We can checks whether the matrix \texttt{X\_centered}is approximately
+equal to the reconstructed matrix from its Singular Value Decomposition
+(SVD).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\texttt{np.allclose()}}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A NumPy function that checks if two arrays are element-wise equal
+    within a specified tolerance.
+  \item
+    It returns \texttt{True} if all elements of the two arrays are
+    approximately equal, and \texttt{False} otherwise.
+  \item
+    Default tolerances are:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{atol}: Absolute tolerance (default is \$1
+      \times 10\^{}\{-8\} \$).
+    \item
+      \texttt{rtol}: Relative tolerance (default is \$1
+      \times 10\^{}\{-5\} \$).
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{\texttt{U.dot(S).dot(Vt)}}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The reconstructed dataset using the SVD components:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(U\): Left singular vectors.
+    \item
+      \(S\): Diagonal matrix of singular values.
+    \item
+      \(V^T\): Transpose of the right singular vectors.
+    \end{itemize}
+  \item
+    The matrix product \(U \cdot S \cdot V^T\) should ideally
+    reconstruct \(X_{\text{centered}}\).
+  \end{itemize}
+\end{itemize}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{X\PYZus{}centered}\PY{p}{,} \PY{n}{U}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Vt}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}18}]:} True
+\end{Verbatim}
+    To project the training set onto the hyperplane, you can simply compute
+the matrix multiplication of the training set matrix \(X\) by the matrix
+\(W_d\), defined as the matrix containing the first \(d\) principal
+components (i.e., the matrix composed of the first \(d\) columns of
+\(V\)). The next snapshot of code reduces the dimensionality of the
+dataset from n-dimensions (original features) to 2D (first two principal
+components). The reduced dataset retains the maximum variance possible
+in the 2D subspace.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{W2} \PY{o}{=} \PY{n}{Vt}\PY{o}{.}\PY{n}{T}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+         \PY{n}{X2D} \PY{o}{=} \PY{n}{X\PYZus{}centered}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{W2}\PY{p}{)}
+         \PY{n}{X2D\PYZus{}using\PYZus{}svd} \PY{o}{=} \PY{n}{X2D}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{X2D\PYZus{}using\PYZus{}svd}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-1.22406148 -0.53113997]
+ [ 0.15884932  0.44624623]
+ [-1.23082641 -0.45801283]
+ {\ldots}
+ [-1.28801245 -0.08442393]
+ [ 1.11641326 -0.09614666]
+ [ 0.7136855   0.33106703]]
+
+    \end{Verbatim}
+
+    \paragraph{PCA using Scikit-Learn}\label{pca-using-scikit-learn}
+
+With Scikit-Learn, PCA is really trivial. It even takes care of mean
+centering for you:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{decomposition} \PY{k+kn}{import} \PY{n}{PCA}
+         
+         \PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{X2D} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{X2D}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}21}]:} array([[ 1.22406148,  0.53113997],
+                [-0.15884932, -0.44624623],
+                [ 1.23082641,  0.45801283],
+                [ 0.82757991, -0.24037692],
+                [ 0.81598401, -0.23558458]])
+\end{Verbatim}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{X2D\PYZus{}using\PYZus{}svd}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:} array([[-1.22406148, -0.53113997],
+                [ 0.15884932,  0.44624623],
+                [-1.23082641, -0.45801283],
+                [-0.82757991,  0.24037692],
+                [-0.81598401,  0.23558458]])
+\end{Verbatim}
+    Notice that running PCA multiple times on slightly different datasets
+may result in different results. In general the only difference is that
+some axes may be flipped. In this example, PCA using Scikit-Learn gives
+the same projection as the one given by the SVD approach, except both
+axes are flipped:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{X2D}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{n}{X2D\PYZus{}using\PYZus{}svd}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} True
+\end{Verbatim}
+    \paragraph{Explained Variance Ratio}\label{explained-variance-ratio}
+
+Another very useful piece of information is the explained variance ratio
+of each principal component, available via the
+explained\_variance\_ratio\_ variable. It indicates the proportion of
+the dataset's variance that lies along the axis of each principal
+component. For example, let's look at the explained variance ratios of
+the first two components of the 3D dataset
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{pca}\PY{o}{.}\PY{n}{explained\PYZus{}variance\PYZus{}ratio\PYZus{}}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}24}]:} array([0.85341663, 0.1369031 ])
+\end{Verbatim}
+    The first dimension explains 84.2\% of the variance, while the second
+explains 14.6\%. By projecting down to 2D, we lost about 1\% of the
+variance:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{pca}\PY{o}{.}\PY{n}{explained\PYZus{}variance\PYZus{}ratio\PYZus{}}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} 0.00968027240262126
+\end{Verbatim}
+    \paragraph{A Simple Example of PCA on Interest Rate
+Data}\label{a-simple-example-of-pca-on-interest-rate-data}
+
+PCA as a concept is useful for measuring risk arising from a set of
+correlated market variables. For example, interest rates that are quoted
+in the market have correlation to each other. Thus, an interest rate for
+tenor 1Y is not independent of interest rate for tenor say 3Y. There is
+always some degree of correlation between all the tenor points with each
+other. To achieve this objective, the PCA model computes a set of
+variables that are called as Principal components (PCs). PCA is a model
+which involves transforming a set of observations (i.e.~interest rate
+time series in our case) into a set of uncorrelated variables called as
+the PCs. This transformation behaves in way such that the first PC
+explains the largest possible variance, and this accounts for majority
+of the variability in the data. Each succeeding component in turn
+explains the highest possible variance while at the same time following
+the condition of orthogonality to each of the preceding PCs. Resulting
+PCs computed by the model are uncorrelated to each other, thereby
+allowing them to be used independently with respect to each other.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{decomposition} \PY{k+kn}{import} \PY{n}{PCA}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{scale}
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{path} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MarketData.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{x} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+         \PY{n}{x}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:}    Date    3m    6m    1y    2y    3y    4y    5y    7y   10y
+         0     1  7.71  7.90  8.16  8.56  8.71  8.75  8.94  9.04  8.76
+         1     2  7.75  7.93  8.17  8.58  8.72  8.76  8.96  9.05  8.76
+         2     3  7.68  7.90  8.18  8.54  8.69  8.75  8.92  9.02  8.73
+         3     4  7.69  7.93  8.22  8.55  8.70  8.76  8.93  9.03  8.75
+         4     5  7.69  7.96  8.22  8.55  8.70  8.76  8.93  9.03  8.75
+\end{Verbatim}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{df} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+         \PY{n}{X} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{values}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{c+c1}{\PYZsh{}Normalization of the data}
+         \PY{n}{X} \PY{o}{=} \PY{n}{scale}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\end{Verbatim}
+
+    Factor loadings can be calculated as below:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+         \PY{n}{pca}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+         \PY{n}{factor\PYZus{}loading} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{components\PYZus{}}
+         \PY{n}{df\PYZus{}factor\PYZus{}loading} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{factor\PYZus{}loading}\PY{p}{)}
+         \PY{n}{df\PYZus{}factor\PYZus{}loading}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:}           0         1         2         3         4         5         6  \textbackslash{}
+         0 -0.326333 -0.332127 -0.335253 -0.336409 -0.336407 -0.336645 -0.336749   
+         1  0.544483  0.481083  0.254532  0.026220 -0.094576 -0.232499 -0.195293   
+         2 -0.420097 -0.089586  0.239718  0.367905  0.368985  0.193024  0.162056   
+         3 -0.483507  0.155548  0.552238  0.194323 -0.150791 -0.285729 -0.310074   
+         4 -0.077813  0.031178 -0.068074 -0.189461 -0.066528  0.199704  0.509370   
+         5  0.265687 -0.373126 -0.286407  0.548879  0.267776  0.002223 -0.390429   
+         6  0.156875 -0.313745  0.089269  0.445102 -0.474288 -0.417560  0.506926   
+         7 -0.113533  0.227273 -0.269583 -0.058133  0.562689 -0.692176  0.238268   
+         8  0.269520 -0.579435  0.541370 -0.417573  0.318277 -0.142704  0.020379   
+         
+                   7         8  
+         0 -0.331415 -0.328477  
+         1 -0.439282 -0.335432  
+         2 -0.254609 -0.598480  
+         3 -0.106423  0.432952  
+         4 -0.714587  0.371542  
+         5 -0.316872  0.286948  
+         6  0.089134 -0.081522  
+         7  0.028055  0.078216  
+         8 -0.035621  0.028572  
+\end{Verbatim}
+    Factor loadings explain the relation between the impact of a factor on
+interest rates at respective tenor points. In PCA we also analyse the
+amount of dispersion explained by each of the PCs. Now we will see which
+PC contributes how much amount of variance/dispersion:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{c+c1}{\PYZsh{} variance percent of each PC}
+         \PY{n}{variance\PYZus{}percent\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{n}{pca}\PY{o}{.}\PY{n}{explained\PYZus{}variance\PYZus{}}\PY{p}{)}
+         \PY{n}{variance\PYZus{}ratio\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{n}{pca}\PY{o}{.}\PY{n}{explained\PYZus{}variance\PYZus{}ratio\PYZus{}}\PY{p}{)}
+         \PY{n}{variance\PYZus{}ratio\PYZus{}df} \PY{o}{=} \PY{n}{variance\PYZus{}ratio\PYZus{}df} \PY{o}{*} \PY{l+m+mi}{100}
+         \PY{n}{variance\PYZus{}ratio\PYZus{}df}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}34}]:}            0
+         0  96.406078
+         1   1.931193
+         2   1.183464
+         3   0.242575
+         4   0.125015
+         5   0.059899
+         6   0.032387
+         7   0.013283
+         8   0.006106
+\end{Verbatim}
+    From the table alongside, we observe that PC1 explains almost 96\% of
+the total variation, and PC2 explains close to 1.95\% of total
+variation. Therefore, rather than using all PCs in the subsequent
+calculation, we can only use PC1 and PC2 in further calculation as these
+two components explain close to 98\% of the total variance.
+
+\begin{itemize}
+\tightlist
+\item
+  PC1 corresponds to the roughly the parallel shift in the yield curve.
+\item
+  PC2 corresponds to roughly a steepening in the yield curve.
+\end{itemize}
+
+This is in-line with the theory of fixed income risk measurement which
+states that majority of the movement in the price of a bond is explained
+by the parallel shift in the yield curve and the residual movements in
+the price is explained by steepening and curvature of the interest rate
+curve.
+
+    \subsubsection{Linear Discriminant Analysis
+(LDA)}\label{linear-discriminant-analysis-lda}
+
+\textbf{Linear Discriminant Analysis (LDA)} is a supervised machine
+learning technique used for:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Dimensionality Reduction}: Transforming data into a
+  lower-dimensional space while preserving class separability.
+\item
+  \textbf{Classification}: Modeling the differences between classes.
+\end{enumerate}
+
+It projects data onto a new axis (or axes) that maximize class
+separability based on the relationship between features and class
+labels.
+
+\textbf{Key Objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Maximize Between-Class Variance}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ensure the means of different classes are as far apart as possible
+    in the projected space.
+  \end{itemize}
+\item
+  \textbf{Minimize Within-Class Variance}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ensure the spread of data points within each class is as small as
+    possible.
+  \end{itemize}
+\item
+  \textbf{Find the Optimal Projection}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    LDA identifies a linear combination of features (a projection) that
+    best separates multiple classes.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Steps in LDA}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Compute the Mean of Each Class}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For each class, compute the mean vector of the features.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  \textbf{Compute the Within-Class Scatter Matrix (\$ S\_W \$)}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Measures the spread (variance) of data points within each class.
+  \end{itemize}
+
+  \[
+  S_W = \sum_{i=1}^k \sum_{x \in C_i} (x - \mu_i)(x - \mu_i)^T
+  \]
+
+  Where \$ k \$ is the number of classes, \$ x \$ is a data point, and
+  \$ \mu\_i \$ is the mean vector of class \$ i \$.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\item
+  \textbf{Compute the Between-Class Scatter Matrix (\$ S\_B \$)}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Measures the spread of class means relative to the overall mean.
+  \end{itemize}
+
+  \[
+  S_B = \sum_{i=1}^k N_i (\mu_i - \mu)(\mu_i - \mu)^T
+  \]
+
+  Where \$ N\_i \$ is the number of samples in class \$ i \$, and \$
+  \mu \$ is the overall mean vector.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\item
+  \textbf{Solve the Generalized Eigenvalue Problem}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Find the eigenvalues and eigenvectors of the matrix:
+  \end{itemize}
+
+  \[
+    S_W^{-1} S_B
+    \]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The eigenvectors define the directions of the new axes (discriminant
+    components), and the eigenvalues indicate their importance.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  \textbf{Select the Top Discriminant Components}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Choose the eigenvectors corresponding to the largest eigenvalues.
+    For \$ k \$ classes, at most \$ k-1 \$ discriminant components can
+    be used.
+  \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  \textbf{Project the Data}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Transform the data into the new space defined by the top
+    discriminant components.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Differences Between LDA and PCA}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2717}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3696}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3587}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Aspect
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+LDA
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+PCA
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Type} & Supervised & Unsupervised \\
+\textbf{Goal} & Maximize class separability & Maximize variance \\
+\textbf{Components} & Based on class relationships & Based on overall
+data variance \\
+\textbf{Application} & Classification, Dimensionality Reduction &
+Dimensionality Reduction \\
+\end{longtable}
+
+\textbf{Applications}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Dimensionality Reduction}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Preprocessing step for high-dimensional data before applying a
+    classifier.
+  \end{itemize}
+\item
+  \textbf{Classification}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Used as a classifier itself or to improve the performance of other
+    classification models.
+  \end{itemize}
+\item
+  \textbf{Feature Selection}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Identifying the most discriminative features for separating classes.
+  \end{itemize}
+\end{enumerate}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} **Example Workflow (in Python)**}
+         
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{discriminant\PYZus{}analysis} \PY{k+kn}{import} \PY{n}{LinearDiscriminantAnalysis}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{load\PYZus{}iris}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         
+         \PY{c+c1}{\PYZsh{} Load the Iris dataset}
+         \PY{n}{data} \PY{o}{=} \PY{n}{load\PYZus{}iris}\PY{p}{(}\PY{p}{)}
+         \PY{n}{X} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{data}  \PY{c+c1}{\PYZsh{} Features}
+         \PY{n}{y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{target}  \PY{c+c1}{\PYZsh{} Class labels}
+         
+         \PY{c+c1}{\PYZsh{} Perform LDA}
+         \PY{n}{lda} \PY{o}{=} \PY{n}{LinearDiscriminantAnalysis}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{X\PYZus{}lda} \PY{o}{=} \PY{n}{lda}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Plot the projected data}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+         \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}
+                 \PY{n}{X\PYZus{}lda}\PY{p}{[}\PY{n}{y} \PY{o}{==} \PY{n}{label}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{X\PYZus{}lda}\PY{p}{[}\PY{n}{y} \PY{o}{==} \PY{n}{label}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class }\PY{l+s+si}{\PYZob{}}\PY{n}{label}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}
+             \PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LDA Component 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LDA Component 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Linear Discriminant Analysis (LDA)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_145_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \textbf{Key Insights}
+
+\begin{itemize}
+\tightlist
+\item
+  LDA optimizes for class separability, making it particularly effective
+  for classification problems.
+\item
+  It is computationally efficient and works well for linearly separable
+  data.
+\item
+  LDA assumes:
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Classes have a Gaussian distribution.
+  \item
+    All classes share the same covariance matrix.
+  \item
+    Features are linearly related to the target.
+  \end{enumerate}
+\end{itemize}
+
+    \subsection{Appendix}\label{appendix}
+
+    \subsubsection{Mathematical Derivation of
+PCA}\label{mathematical-derivation-of-pca}
+
+\textbf{1. Centering the Data}
+
+The first step in PCA is to center the data by subtracting the mean of
+each feature from the corresponding feature values. Let
+\(\mathbf{\mu} = \frac{1}{n} \sum_{i=1}^n \mathbf{x}_i\) denote the mean
+vector of the dataset, where \(\mathbf{x}_i\) is the \(i\)-th row of
+\(\mathbf{X}\). The centered dataset is given by:
+
+\[
+\mathbf{X}_c = \mathbf{X} - \mathbf{1}\mathbf{\mu}^\top,
+\]
+
+where \(\mathbf{1} \in \mathbb{R}^{n \times 1}\) is a column vector of
+ones.
+
+    \textbf{2. Covariance Matrix}
+
+The variability in the data is quantified by the covariance matrix,
+which captures the pairwise covariances between features. The covariance
+matrix of the centered dataset is defined as:
+
+\[
+\mathbf{\Sigma} = \frac{1}{n} \mathbf{X}_c^\top \mathbf{X}_c,
+\]
+
+where \(\mathbf{\Sigma} \in \mathbb{R}^{d \times d}\). Each entry
+\(\Sigma_{ij}\) represents the covariance between the \(i\)-th and
+\(j\)-th features.
+
+    \textbf{3. Principal Components as Eigenvectors}
+
+The principal components are the directions in the feature space that
+maximize the variance of the data when projected onto them.
+Mathematically, this problem can be formulated as finding a vector
+\(\mathbf{w} \in \mathbb{R}^d\) that maximizes the variance of the data
+projected onto \(\mathbf{w}\). The variance of the projection is given
+by:
+
+\[
+\text{Var}(\mathbf{w}) = \mathbf{w}^\top \mathbf{\Sigma} \mathbf{w}.
+\]
+
+To ensure a unique solution, we impose the constraint that
+\(\mathbf{w}\) is a unit vector, i.e., \(\|\mathbf{w}\|_2 = 1\). This
+leads to the optimization problem:
+
+\[
+\max_{\|\mathbf{w}\|_2=1} \mathbf{w}^\top \mathbf{\Sigma} \mathbf{w}.
+\]
+
+This is a constrained optimization problem that can be solved using the
+method of Lagrange multipliers. The Lagrangian is given by:
+
+\[
+\mathcal{L}(\mathbf{w}, \lambda) = \mathbf{w}^\top \mathbf{\Sigma} \mathbf{w} - \lambda (\mathbf{w}^\top \mathbf{w} - 1),
+\]
+
+where \(\lambda\) is the Lagrange multiplier. Taking the gradient with
+respect to \(\mathbf{w}\) and setting it to zero yields:
+
+\[
+\frac{\partial \mathcal{L}}{\partial \mathbf{w}} = 2\mathbf{\Sigma} \mathbf{w} - 2\lambda \mathbf{w} = 0.
+\]
+
+Simplifying, we obtain:
+
+\[
+\mathbf{\Sigma} \mathbf{w} = \lambda \mathbf{w}.
+\]
+
+This is the eigenvalue equation, where \(\lambda\) is an eigenvalue of
+\(\mathbf{\Sigma}\), and \(\mathbf{w}\) is the corresponding
+eigenvector.
+
+    \textbf{FIGURA DA GERON}
+
+    \textbf{\emph{Source: Géron A. ``Hand on Machine Learning with
+Scikit-Learn Keras and Tensorflow''}}
+
+    \textbf{4. Selecting Principal Components}
+
+The eigenvectors of the covariance matrix \(\mathbf{\Sigma}\) represent
+the principal directions of the data, while the eigenvalues indicate the
+amount of variance captured along each principal direction. By sorting
+the eigenvalues in descending order and selecting the top \(k\)
+eigenvectors, we define the \(k\)-dimensional subspace that captures the
+most variance.
+
+Let \(\mathbf{W} \in \mathbb{R}^{d \times k}\) denote the matrix of the
+top \(k\) eigenvectors. The reduced-dimensional representation of the
+data is given by:
+
+\[
+\mathbf{X}_{\text{reduced}} = \mathbf{X}_c \mathbf{W}.
+\]
+
+    \textbf{Interpretation of the Results}
+
+The principal components are orthogonal directions in the feature space
+that explain the maximum variance of the data. The first principal
+component explains the greatest variance, the second principal component
+explains the second greatest variance, and so on. By projecting the data
+onto these components, PCA reduces the dimensionality of the dataset
+while retaining the most significant patterns and structures.
+
+\textbf{Applications of PCA} PCA is widely used in various fields,
+including image compression, exploratory data analysis, and
+preprocessing for machine learning. Its ability to reduce noise, remove
+multicollinearity, and simplify datasets makes it a valuable tool in
+modern data science workflows.
+
+    \subsection{Appendix}\label{appendix}
+
+    A more realistic dataset for credit risk example
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{c+c1}{\PYZsh{} Define rating categories and their default probabilities}
+         \PY{n}{rating\PYZus{}categories} \PY{o}{=} \PY{p}{\PYZob{}}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AAA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{100000}\PY{p}{,} \PY{l+m+mi}{200000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{50000}\PY{p}{,} \PY{l+m+mi}{300000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AA}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.02}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{90000}\PY{p}{,} \PY{l+m+mi}{180000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{40000}\PY{p}{,} \PY{l+m+mi}{250000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.03}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{80000}\PY{p}{,} \PY{l+m+mi}{160000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{35000}\PY{p}{,} \PY{l+m+mi}{200000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BBB}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{60000}\PY{p}{,} \PY{l+m+mi}{140000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{30000}\PY{p}{,} \PY{l+m+mi}{150000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BB}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.10}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{40000}\PY{p}{,} \PY{l+m+mi}{120000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{20000}\PY{p}{,} \PY{l+m+mi}{100000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.15}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{30000}\PY{p}{,} \PY{l+m+mi}{100000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{15000}\PY{p}{,} \PY{l+m+mi}{80000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CCC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.25}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{25000}\PY{p}{,} \PY{l+m+mi}{80000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{10000}\PY{p}{,} \PY{l+m+mi}{60000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.35}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{20000}\PY{p}{,} \PY{l+m+mi}{70000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{8000}\PY{p}{,} \PY{l+m+mi}{40000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.50}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{15000}\PY{p}{,} \PY{l+m+mi}{50000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{5000}\PY{p}{,} \PY{l+m+mi}{20000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.80}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{10000}\PY{p}{,} \PY{l+m+mi}{30000}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{2000}\PY{p}{,} \PY{l+m+mi}{10000}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+         \PY{p}{\PYZcb{}}
+         
+         \PY{c+c1}{\PYZsh{} Generate the dataset with improved consistency}
+         \PY{n}{num\PYZus{}samples} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{ratings} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{rating\PYZus{}categories}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{df\PYZus{}consistent\PYZus{}credit\PYZus{}risk} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Generate data row by row ensuring consistency}
+         \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}samples}\PY{p}{)}\PY{p}{:}
+             \PY{n}{rating} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{ratings}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Select a credit rating}
+             \PY{n}{rating\PYZus{}info} \PY{o}{=} \PY{n}{rating\PYZus{}categories}\PY{p}{[}\PY{n}{rating}\PY{p}{]}
+         
+             \PY{n}{income} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{o}{*}\PY{n}{rating\PYZus{}info}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Income based on rating}
+             \PY{n}{loan\PYZus{}amount} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{o}{*}\PY{n}{rating\PYZus{}info}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}range}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Loan based on rating}
+             \PY{n}{age} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{18}\PY{p}{,} \PY{l+m+mi}{75}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Random age}
+             \PY{n}{employment\PYZus{}status} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unemployed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Self\PYZhy{}Employed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} Default history based on rating\PYZsq{}s probability}
+             \PY{n}{default\PYZus{}history} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Yes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{p}\PY{o}{=}\PY{p}{[}\PY{n}{rating\PYZus{}info}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{rating\PYZus{}info}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}prob}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} Append row to DataFrame}
+             \PY{n}{df\PYZus{}consistent\PYZus{}credit\PYZus{}risk} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{df\PYZus{}consistent\PYZus{}credit\PYZus{}risk}\PY{p}{,} 
+                 \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{rating}\PY{p}{,} \PY{n}{income}\PY{p}{,} \PY{n}{age}\PY{p}{,} \PY{n}{employment\PYZus{}status}\PY{p}{,} \PY{n}{loan\PYZus{}amount}\PY{p}{,} \PY{n}{default\PYZus{}history}\PY{p}{]}\PY{p}{]}\PY{p}{,} 
+                              \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rating}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{employment\PYZus{}status}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{loan\PYZus{}amount}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{default\PYZus{}history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Reset index}
+         \PY{n}{df\PYZus{}consistent\PYZus{}credit\PYZus{}risk}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         
+         \PY{n}{df\PYZus{}consistent\PYZus{}credit\PYZus{}risk}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}63}]:}   rating  income  age employment\_status  loan\_amount default\_history
+         0     BB   89729   46        Unemployed        74326              No
+         1    AAA  196986   68          Employed        80082              No
+         2     CC   38722   38          Employed        38860              No
+         3    CCC   43563   39        Unemployed        10379              No
+         4      C   16028   28        Unemployed        18742             Yes
+         5     BB   66969   44        Unemployed        86941              No
+         6      A  115193   64        Unemployed       140246              No
+         7      C   18750   22        Unemployed        11251              No
+         8    CCC   69276   28          Employed        16086              No
+         9      A  135037   62     Self-Employed       184408              No
+\end{Verbatim}
+    \subsection{References and Credits}\label{references-and-credits}
+
+    \textbf{WEB}
+
+\textbf{Abhyankar Ameya}, ``\emph{Exploring Risk Analytics using PCA
+with Python}'',
+\href{https://abhyankar-ameya.medium.com/exploring-risk-analytics-using-pca-with-python-3aca369cbfe4}{Medium},
+data files for the interest rate example and further details about the
+python code can be dowloaded from the github repository of the author
+\href{https://github.com/Ameya1983/TheAlchemist}{here}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
