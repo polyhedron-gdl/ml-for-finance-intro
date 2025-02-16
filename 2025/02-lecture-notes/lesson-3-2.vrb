@@ -1,0 +1,7 @@
+\frametitle{Example: RBF Kernel in Python}
+\textbf{Python Code:}
+    \begin{verbatim}
+    from sklearn.svm import SVC
+    model = SVC(kernel='rbf', gamma=1)
+    model.fit(X_train, y_train)
+    \end{verbatim}
