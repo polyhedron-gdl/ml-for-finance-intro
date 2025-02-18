@@ -44,7 +44,7 @@
 \author{Giovanni Della Lunga\\{\footnotesize giovanni.dellalunga@unibo.it}}
 %\title{1.1 - Introduction to Machine Learning}
 %\title{1.2 - Data Gathering with Pandas}
-\title{2.2 - Data Pre-Processing}
+\title{2.2 - Feature Engineering and Dimensionality Reduction}
 %\title{4.1 - Linear and Logistic Regression}
 %\title{4.2 - Decision Trees}
 %\title{6 - Text Vectorization}
@@ -85,228 +85,13 @@
   \end{frame}
 }
 \AtBeginSubsection{\frame{\subsectionpage}}
-\section{Data Pre-Processing}
-
-% INSERT HERE
-\begin{frame}{Data Pre-Processing}
-	\begin{itemize}
-		\item Raw data rarely comes in the form and shape that is necessary for the optimal performance of a learning algorithm. 
-		\item On the other hand, the success of a machine learning algorithm highly depends on the quality of the data fed into the model. 
-		\item Real-world data is often dirty containing outliers, missing values, wrong data types, irrelevant features, or non-standardized data. 
-		\item The presence of any of these will prevent the machine learning model to properly learn. 
-		\item For this reason, transforming raw data into a useful format is an essential stage in the machine learning process. 
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Data Pre-Processing}
-The topics that we will cover in this lesson are as follows:
-\begin{itemize}
-\item Removing and imputing missing values from the dataset
-\item Getting categorical data into shape for machine learning algorithms
-\item Feature Normalization
-\item Selecting relevant features for the model construction
-\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Data Cleaning}
-	\begin{itemize}
-		\item Dealing with inconsistent recording
-		\item Removing unwanted observations
-		\item Removing duplicates
-		\item Investigating outliers
-		\item Dealing with missing items
-	\end{itemize}
-\end{frame}
-%..................................................................
-\subsection{Missing Data \\ \scalebox{0.8}{}}
+%
 %---------------------------------------------------------------------------------------------------
-\begin{frame}{Dealing with Missing Data}
-	\begin{itemize}
-		\item The real-world data often has a lot of missing values. 
-		\item The cause of missing values can be data corruption or failure to record data. 
-		\item The handling of missing data is very important during the preprocessing of the dataset as many machine learning algorithms do not support missing values.
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Dealing with Missing Data}
-\textbf{Delete Rows/Columns with Missing Values} 
-\begin{itemize}
-\item One of the easiest ways to deal with missing data is simply to remove the
-corresponding features (columns) or training examples (rows) from the dataset
-entirely; 
-\item Missing values can be handled by deleting the rows or columns having null values. If columns have more than half of the rows as null then the entire column can be dropped.
-\ The rows which are having one or more columns values as null can also be dropped.
-\item  Remember that, in pandas, rows with missing values can easily be dropped via the \textbf{dropna} method.
-\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Dealing with Missing Data}
-\textbf{Delete Rows/Columns with Missing Values} \\
-\vspace{0.5cm}
-\textbf{Pros}:
-\begin{itemize}
-\item A model trained with the removal of all missing values creates a robust model.
-\end{itemize}
-\textbf{Cons}:
-\begin{itemize}
-\item Loss of a lot of information.
-\item Works poorly if the percentage of missing values is excessive in comparison to the complete dataset.
-\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Dealing with Missing Data}
-\textbf{Imputing missing values with Mean/Median}:
-\begin{itemize}
-\item Columns in the dataset which are having numeric continuous values can be replaced with the mean, median, or mode of remaining values in the column. 
-\item This method can prevent the loss of data compared to the earlier method. 
-\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Dealing with Missing Data}
-\textbf{Imputing missing values with Mean/Median}\\
-\vspace{0.5cm}
-\textbf{Pros}:
-\begin{itemize}
-\item Prevent data loss which results in deletion of rows or columns
-\item Works well with a small dataset and is easy to implement.
-\end{itemize}
-\textbf{Cons}:
-\begin{itemize}
-\item Works only with numerical continuous variables.
-\item Can cause data leakage
-\item Do not factor the covariance between features.
-\end{itemize}
-\end{frame}
-%..................................................................
-\subsection{Categorical Data \\ \scalebox{0.8}{}}
-%---------------------------------------------------------------------------------------------------
-\begin{frame}{What is Categorical Data?}
-	\begin{itemize}
-		\item Categorical data is a form of data that takes on values within a finite set of discrete classes. 
-		\item It is difficult to count or measure categorical data using numbers and therefore they are divided into categories. 
-		\item There are two types of categorical variables: \textbf{I. Ordinal Variables} and \textbf{II. Nominal Variables}
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: Ordinal Variables}
-\textbf{Ordinal Variables}
-	\begin{itemize}
-		\item These variables maintain a natural order in their class of values. 
-		\item If we consider the level of education then we can easily sort them according to their education tag in the order of \textit{High School} < \textit{ Under-Graduate} < \textit{ post-Graduate} < \textit{ PhD}. 
-		\item The review rating system can also be considered as an ordinal data type where 5 stars is definitely better than 1 star.
-	\end{itemize}
-\begin{center}
-\includegraphics[scale=.4]{../05-pictures/lesson-2-1_pic_0.png} 
-\end{center}	
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: Nominal Variables}
-\textbf{Nominal Variables}
-	\begin{itemize}
-		\item These variables do not maintain any natural/logical order. 
-		\item The color of a car can be considered as Nominal Variable as we cannot compare the color with each other. 
-		\item It is impossible to state that \textbf{\textit{Red}} is better than \textbf{\textit{Blu}} (subjective!). 
-		\item Similarly, Gender is a type of Nominal Variable as again we cannot differentiate between Male, Female, and Others.
-	\end{itemize}
-\begin{center}
-\includegraphics[scale=.5]{../05-pictures/lesson-2-1_pic_1.png} 
-\end{center}	
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: Encoding}
-	\begin{itemize}
-		\item Most of the Machine learning algorithms are designed to work with numeric data. 
-		\item Hence, we need to convert Categorical (text) data into numerical data for model building. 
-		\item There are multiple encoding techniques to convert categorical data into numerical data. Let us look at some of them.
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: Ordinal Encoding}
-	\begin{itemize}
-		\item \textbf{Ordinal Encoding} primarily encodes ordinal categories into ordered numerical values. 
-		\item Ordinal encoding maps each unique category value to a specific numerical value based on its order or rank. 
-		\item Consider for example an education degree feature in a given data frame. Here, we can define the ordering of the categories when creating an ordinal encoder using sklearn. so, for example, we can arrange the order inside the categories as a list in ascending order. First, we have the High School followed by Associate,Master, and then Ph.D. at the end.
-		\item \textit{OrdinalEncoder(categories=[['HS', 'AS', 'M.S', 'Ph.D.']])}
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: One Hot Encoding}
-	\begin{itemize}
-		\item if there is no ordinal relationship between the categorical variables then ordinal encoding might mislead the model. 
-		\item This is because the ordinal encoder will try to force an ordinal relationship on the variables to assume a natural ordering, thus resulting in poor performance.
-		\item In this case, One Hot encoder should be used to treat our categorical variables. 
-		\item It will create dummy variables by converting N categories into N features/columns. 
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: One Hot Encoding}
-\begin{columns}[T] % align columns
-\begin{column}{.48\textwidth}
-        \begin{itemize}
-		\item Considering the gender example. If we have a male in the first row, then its value is 1. Also if we have a female in the second row then its value is 0. Whenever the category exists its value is 1 and 0 where it does not. 
-		\item We can one-hot encode categorical variables in two ways: by using \textbf{get\_dummies} in pandas and by using \textbf{OneHotEncoder} from sklearn.
-        \end{itemize}
-\end{column}%
-\hfill%
-\begin{column}{.48\textwidth}
-    %\fbox{
-        \includegraphics[width=\linewidth]{../05-pictures/lesson-2-1_pic_2.png}
-    %}
-\end{column}%
-\end{columns}
-\end{frame}
-\begin{frame}{Categorical Data: Label Encoding}
-	\begin{itemize}
-		\item The label encoder will convert each category into a unique numerical value. 
-		\item If implemented with Sklearn, then this encoder should be used to encode output values, i.e. y, and not the input X. 
-		\item It is similar to the ordinal encoder except, here the numeric values are assigned automatically without following any sort of natural order. 
-		\item Generally, the alphabetical order of the categorical values is used to determine which numerical value comes first. 
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: Label Encoding}
-	\begin{itemize}
-		\item Consider for example a target variable 'Job Status' that has four different categories. 
-		\item After applying label encoding to this column the four different categories are mapped into integers 0: Full Time, 1: Intern, 2: Part-Time, and 3:Unemployed. 
-		\item With this, it can be interpreted that Unemployed have a higher priority than Part-Time, Full Time, and Intern while training the model, whereas, \textbf{there is no such priority or relation between these statuses}. 
-		\item We cannot define the order of labels with the label encoding technique.
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Categorical Data: Label Encoding}
-	\begin{center}
-	\includegraphics[scale=1]{../05-pictures/lesson-2-1_pic_3.png}
-	\end{center}
-\end{frame}
-%..................................................................
-\subsection{Feature Scaling (Normalization) \\ \scalebox{0.8}{}}
-%---------------------------------------------------------------------------------------------------
-\begin{frame}{Feature Scaling}
-	\begin{itemize}
-		\item Before using many ML algorithms (including those for unsupervised learning), it is important to scale feature values so that they are comparable.
-		\item  Z-score scaling involves calculating the mean ($\mu$) and SD ($\sigma$) from the values of each feature from the training set. Scaled feature values for all data sets are then created by subtracting the mean and dividing by the SD. 
-\item The scaled feature values have a mean of zero and SD of one.
-		\begin{equation}
-		\text{scaled feature value} = \frac{V-\mu}{\sigma}
-		\end{equation}
-	\end{itemize}
-\end{frame}
-%..................................................................
-\begin{frame}{Feature Scaling}
-	\begin{itemize}
-		\item Min-max scaling involves calculating the maximum and minimum value of each feature from the training set. 
-		\item Scaled feature values for all data sets are then created by subtracting the minimum and dividing by the difference between the maximum and minimum. 
-		\item The scaled feature values lie between zero and one:
-		
-				\begin{equation}
-		\text{scaled feature value} = \frac{V-V_{min}}{V_{max}-V_{min}}
-		\end{equation}
-	\end{itemize}
-\end{frame}
-%..................................................................
+%
 \section{Feature Selection}
-
-
+%
+%---------------------------------------------------------------------------------------------------
+%
 \begin{frame}{Introduction to Feature Selection}
     \begin{itemize}
         \item Feature selection is the process of identifying and retaining only the most relevant variables for a machine learning model.
@@ -316,7 +101,9 @@ entirely;
         \item Feature selection enhances interpretability, reduces training time, and prevents overfitting, leading to a more efficient and effective model.
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Why Feature Selection is Important?}
     \begin{itemize}
         \item \textbf{Reduces Overfitting}: By removing irrelevant or redundant features, the model focuses only on meaningful variables, reducing the risk of learning noise instead of true patterns.
@@ -324,7 +111,9 @@ entirely;
         \item \textbf{Speeds Up Training}: Fewer features mean lower computational complexity, reducing the time required to train and optimize machine learning models.
    \end{itemize}     
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Why Feature Selection is Important?}
     \begin{itemize}
         \item \textbf{Enhances Interpretability}: Models with fewer, well-selected features are easier to understand and explain, which is especially important in regulated industries such as finance and healthcare.
@@ -332,7 +121,9 @@ entirely;
         \item \textbf{Facilitates Model Deployment}: A model with fewer variables is easier to implement in production environments, requiring less storage and computational resources.
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{How do we select features? }
 	\begin{itemize}
 		\item A feature selection procedure combines a search technique with an evaluation method. The search technique proposes new feature subsets, and the evaluation measure determines the how good the subset is.
@@ -340,7 +131,9 @@ entirely;
 		\item However, computational cost inhibits such a practice in reality. In addition, the optimal subset of features varies between machine learning models. A feature subset that optimizes one model`s performance won`t necessarily optimize another`s.
 	\end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Methods of Feature Selection}
     \begin{enumerate}
         \item \textbf{Filter Methods}: These methods apply statistical techniques to evaluate the importance of each feature independently of the model. Common techniques include correlation analysis, Chi-square test, and mutual information.
@@ -348,7 +141,9 @@ entirely;
         \item \textbf{Embedded Methods}: These methods integrate feature selection within the model training process. Techniques such as Lasso (L1) regression and Decision Tree-based feature importance are commonly used.
     \end{enumerate}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Filter Methods}
 	\begin{itemize}
 		\item A typical filter algorithm consists of two steps: it ranks features based on certain criteria and then chooses the highest-ranking features to train the machine learning models.
@@ -356,8 +151,9 @@ entirely;
 		\item However, some multivariate filter selection methods exist as well. These consider features in relations to others in the data set, making them naturally capable of handling redundant features. Their selection criteria scans for duplicated features and correlated features and provide simple but powerful methods to quickly remove redundant information.
 	\end{itemize}
 \end{frame}
-
+%
 %..................................................................
+%
 \begin{frame}{Filter Methods}
 \textbf{Constant, quasi-constant, and duplicated features}
 	\begin{itemize}
@@ -367,7 +163,9 @@ entirely;
 		\item Duplicated features, as the name indicates, are those that are in essence, identical. That is, for every observation, they show the same value.
 	\end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Filter Methods}
 \textbf{Constant, quasi-constant, and duplicated features}
 	\begin{itemize}
@@ -376,7 +174,9 @@ entirely;
 		\item Removing these features is an easy but effective way to reduce the dimension of the feature space, without losing any significant information.
 	\end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Filter Methods}
 \textbf{Correlation}
 	\begin{itemize}
@@ -387,7 +187,9 @@ entirely;
 		\item Therefore, if two features are correlated, the model only really needs one of them, as the second one does not add additional information.
 	\end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Filter Methods}
 \textbf{Mutual Information}
 	\begin{itemize}
@@ -399,7 +201,9 @@ entirely;
 		\item Fisher score essentially compares the actual frequencies of the values of a variable with the expected frequencies if it had no relation to the target.
 	\end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Wrapper Methods}
 	\begin{itemize}
 		\item \footnotesize{In comparison to filter methods, wrapper methods tend to be more computationally expensive, but select a better set of features.
@@ -410,7 +214,9 @@ entirely;
 	\includegraphics[scale=0.65]{../05-pictures/lesson-2-2_pic_4.png}
 	\end{center}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}[fragile]{Example: RFE with Logistic Regression}{Wrapper Methods}
     \begin{lstlisting}[language=Python]
 from sklearn.feature_selection import RFE
@@ -423,7 +229,9 @@ selected_features = X_train.columns[rfe.support_]
 print("Selected Features:", selected_features)
     \end{lstlisting}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Embedded Methods}
     \begin{itemize}
         \item Feature selection occurs during model training.
@@ -435,7 +243,9 @@ print("Selected Features:", selected_features)
         \end{itemize}
     \end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Comparison of Methods}
 \center{
     \begin{tabular}{lcc}
@@ -449,7 +259,9 @@ print("Selected Features:", selected_features)
     \end{tabular}
     }
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Understanding Pipelines in Scikit-Learn}
     \begin{itemize}
         \item A pipeline is a sequence of data processing steps that are applied in a structured way.
@@ -465,7 +277,9 @@ print("Selected Features:", selected_features)
         \end{itemize}
     \end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Feature Selection Pipeline in Scikit-Learn}
     \begin{itemize}
         \item Machine learning pipelines in Scikit-Learn allow seamless integration of preprocessing, feature selection, and model training.
@@ -479,7 +293,9 @@ print("Selected Features:", selected_features)
         \item Pipelines prevent data leakage by ensuring that feature selection and scaling are only learned from the training data.
     \end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}[fragile]{Example: Feature Selection Pipeline in Scikit-Learn}
 \footnotesize{
     \begin{lstlisting}[language=Python]
@@ -503,7 +319,9 @@ y_pred = pipeline.predict(X_test) # Make predictions
     \end{lstlisting}
 }
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Advantages of Using Pipelines}
     \begin{itemize}
         \item \textbf{Automation:} Reduces manual steps and minimizes human errors.
@@ -512,7 +330,9 @@ y_pred = pipeline.predict(X_test) # Make predictions
         \item \textbf{Hyperparameter Tuning:} Easily integrates with GridSearchCV and RandomizedSearchCV for optimizing parameters.
     \end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Conclusion and Best Practices}
     \begin{itemize}
         \item Choose method based on dataset size and complexity.
@@ -522,9 +342,13 @@ y_pred = pipeline.predict(X_test) # Make predictions
         \item Always validate selected features.
     \end{itemize}
 \end{frame}
-
+%
+%---------------------------------------------------------------------------------------------------
+%
 \section{Dimensionality Reduction}
-
+%
+%---------------------------------------------------------------------------------------------------
+%
 \begin{frame}{Feature Selection: Follow a KISS Approach!}
 	\begin{itemize}
 		\item As a dimensionality reduction technique, feature selection aims to choose a small subset of the relevant features from the original features by removing irrelevant, redundant, or noisy features. 
@@ -533,7 +357,9 @@ y_pred = pipeline.predict(X_test) # Make predictions
 		\item Additionally, constructing models from datasets with many features is more computationally demanding.
 	\end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Feature Extraction and Feature Selection}
 	\begin{itemize}
 		\item Even though feature extraction and feature selection processes share some overlap, often these terms are erroneously equated. 
@@ -543,7 +369,9 @@ y_pred = pipeline.predict(X_test) # Make predictions
 		\item It is not only reduces training time and model complexity, but it eventually helps to \textbf{prevent overfitting}.
 	\end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Principal Component Analysis (PCA)}
     \begin{itemize}
         \item PCA is a widely used technique that transforms the original features into a new set of orthogonal components.
@@ -560,7 +388,9 @@ y_pred = pipeline.predict(X_test) # Make predictions
         \item PCA is effective for noise reduction and visualization.
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Mathematics Behind PCA}
     \begin{itemize}
         \item Given a dataset with $n$ features, PCA computes the covariance matrix:
@@ -575,7 +405,9 @@ y_pred = pipeline.predict(X_test) # Make predictions
         where $W$ is the matrix of selected eigenvectors.
     \end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Standardization and Gradient Descent}
 	\begin{center}
 	\includegraphics[scale=.375]{../05-pictures/lesson-2-2_pic_6.png}
@@ -596,7 +428,9 @@ pca = PCA(n_components=2)
 X_pca = pca.fit_transform(X_scaled)
     \end{lstlisting}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Advantages and Limitations of PCA}
     \begin{itemize}
         \item \textbf{Advantages:}
@@ -613,7 +447,9 @@ X_pca = pca.fit_transform(X_scaled)
         \end{itemize}
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{When to Use PCA?}
     \begin{itemize}
         \item When dealing with high-dimensional data to reduce computational costs.
@@ -622,7 +458,9 @@ X_pca = pca.fit_transform(X_scaled)
         \item When feature interpretability is less important compared to efficiency.
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Linear Discriminant Analysis (LDA)}
     \begin{itemize}
         \item LDA is a supervised dimensionality reduction technique that maximizes class separability.
@@ -631,19 +469,25 @@ X_pca = pca.fit_transform(X_scaled)
         \item LDA assumes that different classes generate data based on Gaussian distributions with the same covariance matrix.
     \end{itemize}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{LDA Vs PCA}
 	\begin{center}
 	\includegraphics[scale=.375]{../05-pictures/lesson-2-2_pic_7.png}
 	\end{center}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{LDA Vs PCA}
 	\begin{center}
 	\includegraphics[scale=.375]{../05-pictures/lesson-2-2_pic_8.png}
 	\end{center}
 \end{frame}
+%
 %..................................................................
+%
 \begin{frame}{Mathematics Behind LDA}
     \begin{itemize}
         \item LDA computes two key matrices:
@@ -658,7 +502,9 @@ X_pca = pca.fit_transform(X_scaled)
         where eigenvectors corresponding to the largest eigenvalues define the optimal projection space.
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}[fragile]{Example: LDA in Scikit-Learn}
     \begin{lstlisting}[language=Python]
 from sklearn.discriminant_analysis 
@@ -675,7 +521,9 @@ lda = LinearDiscriminantAnalysis(n_components=2)
 X_lda = lda.fit_transform(X_scaled, y)
     \end{lstlisting}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Advantages and Limitations of LDA}
     \begin{itemize}
         \item \textbf{Advantages:}
@@ -692,7 +540,9 @@ X_lda = lda.fit_transform(X_scaled, y)
         \end{itemize}
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{When to Use LDA?}
     \begin{itemize}
         \item When working with classification tasks that require feature reduction.
@@ -700,7 +550,9 @@ X_lda = lda.fit_transform(X_scaled, y)
         \item When the dataset follows Gaussian distribution assumptions.
     \end{itemize}
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Comparison: PCA vs LDA}
 \center{
     \begin{tabular}{lcc}
@@ -713,7 +565,9 @@ X_lda = lda.fit_transform(X_scaled, y)
     \end{tabular}
 }
 \end{frame}
-
+%
+%..................................................................
+%
 \begin{frame}{Conclusion}{LDA}
     \begin{itemize}
         \item LDA is a powerful tool for supervised dimensionality reduction, particularly in classification tasks.
@@ -721,11 +575,7 @@ X_lda = lda.fit_transform(X_scaled, y)
         \item Choosing between PCA and LDA depends on the problem: use PCA for general structure preservation and LDA for class separability.
     \end{itemize}
 \end{frame}
-
-
-\end{document}
-
-
+%=====================================================================
 \end{document}
 %=====================================================================
 
@@ -734,4 +584,20 @@ X_lda = lda.fit_transform(X_scaled, y)
 	\begin{center}
 	\includegraphics[scale=1]{../05-pictures/lesson-2-1_pic_4.png}
 	\end{center}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction}{Data Pre-Processing}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+%
+%..................................................................
+%
+\begin{frame}{Introduction}{Data Pre-Processing}
+\begin{itemize}
+\item
+\end{itemize}
 \end{frame}

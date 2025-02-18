@@ -7584,7 +7584,7 @@ Cell <span class="ansi-green-intense-fg ansi-bold">In[2], line 4</span>
 </div>
 </div>
 </div>
-</div></div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div></div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7596,19 +7596,6 @@ Cell <span class="ansi-green-intense-fg ansi-bold">In[2], line 4</span>
 <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>                 <span class="c1"># Change an element of the array</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;class 'numpy.ndarray'&gt; (3,) 1 2 3
-[5 2 3]
-</pre>
 </div>
 </div>
 </div>
@@ -8307,12 +8294,21 @@ x + 3y = 7 \\
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Matplotlib</strong> is a powerful Python library used for creating visualizations and plots. It provides an easy way to generate charts, graphs, and figures for data analysis. The library is widely used in scientific computing, data science, and machine learning to represent data visually.</p>
 <p>One of the key advantages of Matplotlib is its simplicity and flexibility. With just a few lines of code, it allows users to create basic plots, while also offering extensive customization options for more complex visualizations. Users can modify colors, labels, line styles, and even create interactive plots.</p>
-<p>Matplotlib supports a wide variety of plot types, including line plots, bar charts, histograms, scatter plots, and pie charts. It integrates seamlessly with other Python libraries such as NumPy and Pandas, making it an essential tool for handling and visualizing large datasets. Whether for exploratory data analysis or professional presentations, Matplotlib provides the tools needed to effectively communicate insights through data visualization.
-In this section give a brief introduction to the <code>matplotlib.pyplot</code> module, which provides a plotting system similar to that of MATLAB.</p>
 </div>
 </div>
 </div>
-</div></div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div></div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Matplotlib supports a wide variety of plot types, including line plots, bar charts, histograms, scatter plots, and pie charts. It integrates seamlessly with other Python libraries such as NumPy and Pandas, making it an essential tool for handling and visualizing large datasets. Whether for exploratory data analysis or professional presentations, Matplotlib provides the tools needed to effectively communicate insights through data visualization.</p>
+<p>In this section give a brief introduction to the <code>matplotlib.pyplot</code> module, which provides a plotting system similar to that of MATLAB.</p>
+</div>
+</div>
+</div>
+</div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8325,7 +8321,7 @@ In this section give a brief introduction to the <code>matplotlib.pyplot</code> 
 </div>
 </div>
 </div>
-</div><div class="fragment">
+</div></div><div class="fragment">
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8446,6 +8442,33 @@ In this section give a brief introduction to the <code>matplotlib.pyplot</code> 
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Compute the x and y coordinates for points on sine and cosine curves</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">y_sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_cos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>&lt;Figure size 1200x200 with 0 Axes&gt;</pre>
+</div>
+</div>
+</div>
+</div>
 </div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8453,26 +8476,17 @@ In this section give a brief introduction to the <code>matplotlib.pyplot</code> 
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># Set the figure size to 8 inches wide and 6 inches tall</span>
-
-<span class="c1"># Compute the x and y coordinates for points on sine and cosine curves</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
-<span class="n">y_sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">y_cos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  
 <span class="c1"># Set up a subplot grid that has height 1 and width 2,</span>
 <span class="c1"># and set the first such subplot as active.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
 <span class="c1"># Make the first plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_sin</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Sine'</span><span class="p">)</span>
-
 <span class="c1"># Set the second subplot as active, and make the second plot.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_cos</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cosine'</span><span class="p">)</span>
-
 <span class="c1"># Show the figure.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -8550,31 +8564,6 @@ In this section give a brief introduction to the <code>matplotlib.pyplot</code> 
 </div>
 </div>
 </div>
-</div></section><section>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<div style="display: flex; align-items: center;">
-<div style="flex: 0 0 auto; margin-right: 20px;">
-<img alt="Example Image" src="./pic/python-pills.png" style="width: 300px; height: auto;"/>
-</div>
-<div style="flex: 1 1 auto;">
-<p><strong>
-      Python Pills  
-      </strong></p>
-<p>
-<mark style="background-color: #FFFF00 !important;">A dictionary in Python is a data structure that stores key-value pairs</mark>, allowing fast lookups and efficient data organization. Each key in a dictionary is unique and maps to a specific value, which can be of any data type. Dictionaries are mutable, meaning their contents can be changed after creation. They are commonly used for tasks requiring quick access to data, such as configuration settings, JSON parsing, or counting occurrences of elements in a dataset.
-      </p>
-<p>
-<mark style="background-color: #FFFF00 !important;">The syntax of a dictionary in Python consists of key-value pairs enclosed in curly braces `{}`. Each key is separated from its corresponding value by a colon `:` and multiple pairs are separated by commas</mark>. Keys must be unique and immutable (such as strings, numbers, or tuples), while values can be of any data type. A dictionary is created using `{key: value}` notation or with the `dict()` constructor. For example, `my_dict = {"name": "Alice", "age": 25, "city": "New York"}` defines a dictionary with three key-value pairs.
-</p>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div><div class="fragment"><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8594,7 +8583,86 @@ In this section give a brief introduction to the <code>matplotlib.pyplot</code> 
 </div>
 </div>
 </div>
-</div></div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div></div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div style="display: flex; align-items: center;">
+<div style="flex: 0 0 auto; margin-right: 20px;">
+<img alt="Example Image" height="auto" src="./pic/python-pills.png" width="600"/>
+</div>
+<div style="flex: 1 1 auto;">
+<p><strong>
+      Python Pills  
+      </strong></p>
+<p>
+<mark style="background-color: #FFFF00 !important;">A dictionary in Python is a data structure that stores key-value pairs</mark>, allowing fast lookups and efficient data organization. Each key in a dictionary is unique and maps to a specific value, which can be of any data type. Dictionaries are mutable, meaning their contents can be changed after creation. They are commonly used for tasks requiring quick access to data, such as configuration settings, JSON parsing, or counting occurrences of elements in a dataset.
+      </p>
+<p>
+<mark style="background-color: #FFFF00 !important;">The syntax of a dictionary in Python consists of key-value pairs enclosed in curly braces `{}`. Each key is separated from its corresponding value by a colon `:` and multiple pairs are separated by commas</mark>. Keys must be unique and immutable (such as strings, numbers, or tuples), while values can be of any data type. A dictionary is created using `{key: value}` notation or with the `dict()` constructor. For example, `my_dict = {"name": "Alice", "age": 25, "city": "New York"}` defines a dictionary with three key-value pairs.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div style="display: flex; align-items: center;">
+<!-- Left section (20% width) for the image -->
+<div style="flex: 0 0 20%; text-align: center;">
+<img alt="Example Image" src="./pic/python-pills.png" style="max-width: 100%; height: auto;"/>
+</div>
+<!-- Right section (80% width) for the text -->
+<div style="flex: 0 0 80%; padding-left: 10px;">
+<p><strong>
+      Python Pills  
+      </strong></p>
+<p>
+<mark style="background-color: #FFFF00 !important;">A dictionary in Python is a data structure that stores key-value pairs</mark>, allowing fast lookups and efficient data organization. Each key in a dictionary is unique and maps to a specific value, which can be of any data type. Dictionaries are mutable, meaning their contents can be changed after creation. They are commonly used for tasks requiring quick access to data, such as configuration settings, JSON parsing, or counting occurrences of elements in a dataset.
+      </p>
+<p>
+<mark style="background-color: #FFFF00 !important;">The syntax of a dictionary in Python consists of key-value pairs enclosed in curly braces `{}`. Each key is separated from its corresponding value by a colon `:` and multiple pairs are separated by commas</mark>. Keys must be unique and immutable (such as strings, numbers, or tuples), while values can be of any data type. A dictionary is created using `{key: value}` notation or with the `dict()` constructor. For example, `my_dict = {"name": "Alice", "age": 25, "city": "New York"}` defines a dictionary with three key-value pairs.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></section><section>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div style="display: flex;">
+<!-- Left section (20% width) for the image -->
+<div style="width: 20%; text-align: center;">
+<img alt="My Image" src="./pic/python-pills.png" style="width: 100%; height: auto;"/>
+</div>
+<!-- Right section (80% width) for the text -->
+<div style="width: 80%; padding-left: 10px;">
+<p><strong>
+      Python Pills  
+      </strong></p>
+<p>
+<mark style="background-color: #FFFF00 !important;">A dictionary in Python is a data structure that stores key-value pairs</mark>, allowing fast lookups and efficient data organization. Each key in a dictionary is unique and maps to a specific value, which can be of any data type. Dictionaries are mutable, meaning their contents can be changed after creation. They are commonly used for tasks requiring quick access to data, such as configuration settings, JSON parsing, or counting occurrences of elements in a dataset.
+      </p>
+<p>
+<mark style="background-color: #FFFF00 !important;">The syntax of a dictionary in Python consists of key-value pairs enclosed in curly braces `{}`. Each key is separated from its corresponding value by a colon `:` and multiple pairs are separated by commas</mark>. Keys must be unique and immutable (such as strings, numbers, or tuples), while values can be of any data type. A dictionary is created using `{key: value}` notation or with the `dict()` constructor. For example, `my_dict = {"name": "Alice", "age": 25, "city": "New York"}` defines a dictionary with three key-value pairs.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
